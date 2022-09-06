@@ -49,7 +49,27 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
+}
+
+static int cmd_si(char *args) {
+  char *arg = strtok(NULL, " ");
+  if (arg) {
+    int cnt = 0;
+    sscanf(arg, "%d", &cnt);
+
+    if(cnt <= 0) {
+      printf("Invalid Input\n");
+      return -1;
+    }
+
+    cpu_exec(cnt);
+    return 0; 
+  }
+  // default by 1 
+  cpu_exec(1);
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -62,7 +82,7 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Steps N instructions, default by 1", cmd_si },
   /* TODO: Add more commands */
 
 };
