@@ -23,8 +23,15 @@
 enum
 {
   TK_NOTYPE = 256,
-  TK_EQ,
-
+  TK_EQ,            // =
+  DEC_NUM,          // decimal number
+  HEX_NUM,          // hexadecimal number
+  NEQ,              // !=
+  LOGIC_AND,        // &&
+  BIT_AND,          // &
+  NEG,              // -
+  REG,              // register
+  DEREF             // dereference
   /* TODO: Add more token types */
 
 };
@@ -39,9 +46,21 @@ static struct rule
      * Pay attention to the precedence level of different rules.
      */
 
-    {" +", TK_NOTYPE}, // spaces
-    {"\\+", '+'},      // plus
-    {"==", TK_EQ},     // equal
+    {" +", TK_NOTYPE},                      // spaces
+    {"[0-9]+", DEC_NUM},                    // decimal number
+    {"0x[0-9, a-f]+", HEX_NUM},             // hexadecimal number
+    {"\\+", '+'},                           // plus
+    {"\\-", '-'},                           // minus
+    {"\\*", '*'},                           // multiply
+    {"\\/", '/'},                           // divide
+    {"\\(", '('},                           // left parenthese
+    {"\\)", ')'},                           // right parenthese
+    {"==", TK_EQ},                          // equal
+    {"!=", NEQ},                            // not equal
+    {"&&", LOGIC_AND},                      // logical and
+    {"\\&", BIT_AND},                       // bit and
+    {"\\$[\\$,a-z][a-z,0-9]+", REG},        // register
+
 };
 
 #define NR_REGEX ARRLEN(rules)
