@@ -118,17 +118,20 @@ static bool make_token(char *e)
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
+        
+        // record tokens:
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
-        switch (rules[i].token_type)
-        {
-        default:
-          TODO();
+        if(rules[i].token_type != TK_NOTYPE) {
+          tokens[nr_token].type = rules[i].token_type;
+          strncpy(tokens[nr_token].str, substr_start, substr_len);
+          nr_token++;          
         }
+
+        // switch (rules[i].token_type)
+        // {
+        // default:
+        //   TODO();
+        // }
 
         break;
       }
@@ -141,8 +144,82 @@ static bool make_token(char *e)
     }
   }
 
+  // operations on unary operator:
+  
+  for (int i = 0; i < nr_token; i++) {
+    // NEG
+    if(tokens[i].type == '-') {
+      if(i == 0) tokens[i].type = NEG;
+
+      else if(tokens[i-1].type != DEC_NUM &&
+              tokens[i-1].type != HEX_NUM &&
+              tokens[i-1].type != ')'     &&
+              tokens[i-1].type != REG)
+
+              tokens[i].type = NEG;
+    }
+    // DEREF 
+    if(tokens[i].type == '*') {
+      if(i == 0) tokens[i].type = DEREF;
+
+      else if(tokens[i-1].type != DEC_NUM &&
+              tokens[i-1].type != HEX_NUM &&
+              tokens[i-1].type != ')'     &&
+              tokens[i-1].type != REG)
+
+              tokens[i].type = DEREF;
+    }
+  }
+
+
+
   return true;
 }
+
+/************************************************************************************/
+/* 
+check if expr is surrounded by parenthese
+as well as judge the validation by bracket matching 
+*/
+static bool check_parenthese(int p, int q) {
+
+  if(tokens[p].type != '(' || tokens[q].type != ')') {
+    Log("dismatch parenthese at pos %d - %d", p, q);
+    return false;    
+  }
+
+  if(p + 1 >= q) {
+    Log("Invalid range of parenthese");
+    return false;
+  }
+
+  // bracket matching judging:
+  int cnt = 0;
+  for(int pr = p; pr <= q; pr ++){
+    if(cnt < 0) {
+      Log("Invalid parenthese match at %d", pr)
+      return false;
+    }
+
+    if(tokens[pr].type == "(") cnt ++;
+    else if(tokens[pr].type == ")") cnt --;
+
+  }
+  if(cnt == 0) return true;
+  else return false;
+}
+
+/************************************************************************************/
+
+int find_op(int p, int q) {
+  int idx = p;
+  int flag = 0;
+  while(idx <= q) {
+    if(tokens[idx].type == '(') { flag ++; }
+    else if(tokens[idx].type == ')') flag --;
+  }
+}
+
 
 word_t expr(char *e, bool *success)
 {
