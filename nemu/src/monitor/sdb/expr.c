@@ -226,7 +226,7 @@ Level 8: logic_and &&
 */
 
 int find_op(int p, int q) {
-  int idx = p + 1;
+  int idx = p;
   int flag = 0;
   int prior[10];
   memset(prior, 0, sizeof(prior));
@@ -236,18 +236,18 @@ int find_op(int p, int q) {
     else if(tokens[idx].type == ')') flag --;
 
     if(flag == 0) {
-      if(tokens[idx].type == AND) { prior[0] = idx; return idx; }
+      if(tokens[idx].type == AND) { prior[0] = idx + 1; return idx; }
       else if(tokens[idx].type == TK_EQ || 
-              tokens[idx].type == NEQ ) prior[1] = idx;
+              tokens[idx].type == NEQ ) prior[1] = idx + 1;
       else if(tokens[idx].type == LEFT_SHIFT || 
-              tokens[idx].type == RIGHT_SHIFT) prior[2] = idx;
+              tokens[idx].type == RIGHT_SHIFT) prior[2] = idx + 1;
       else if(tokens[idx].type == '+' || 
-              tokens[idx].type == '-') prior[3] = idx;
+              tokens[idx].type == '-') prior[3] = idx + 1;
       else if(tokens[idx].type == '*' ||
               tokens[idx].type == '/' ||
-              tokens[idx].type == '%') prior[4] = idx;
+              tokens[idx].type == '%') prior[4] = idx + 1;
       else if(tokens[idx].type == NEG ||
-              tokens[idx].type == DEREF) prior[5] = idx;
+              tokens[idx].type == DEREF) prior[5] = idx + 1;
     }
 
     idx ++;
