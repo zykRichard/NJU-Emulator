@@ -273,10 +273,10 @@ word_t eval(int p, int q) {
     case REG : return isa_reg_str2val(tokens[p].str, &access_to_reg);
       break;
     
-    case DEC_NUM : sscanf(tokens[p].str, "%d", &val); 
+    case DEC_NUM : sscanf(tokens[p].str, "%d", &val); return val; 
       break;
 
-    case HEX_NUM : sscanf(tokens[p].str, "%x", &val);
+    case HEX_NUM : sscanf(tokens[p].str, "%x", &val); return val;
       break;
 
     default : Log("Should be a number"); assert(0);
