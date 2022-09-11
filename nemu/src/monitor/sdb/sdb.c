@@ -90,18 +90,20 @@ static int cmd_info(char *args) {
 static int cmd_p(char *args) {
   bool flag = false;
   word_t ans = expr(args, &flag);
-  if(flag) { printf("%d\n", ans); return ans; }
+  if(flag) { printf("%d\n", ans); return 0; }
   else printf("Error occurs in eval the expr\n");
-  return 0;
+  return -1;
 }
 
 static int cmd_x(char *args) {
   char *arg = strtok(NULL, " ");
   int N = 0;
+  bool flag = false;
   vaddr_t addr;
   sscanf(arg, "%d", &N);
   arg = strtok(NULL, " ");
-  addr = (vaddr_t)cmd_p(arg);
+  addr = expr(arg, &flag);
+  if(!flag) return -1;
   for(int i = 0; i < N; i++) {
     printf("0x%x  :  0x%x\n", addr, vaddr_read(addr, 4));
     addr += 4;
