@@ -255,7 +255,7 @@ int find_op(int p, int q) {
 
   for(int i = 0; i < PRIORS; i++) 
     if(prior[i]) { 
-      Log("domiant OP is %c at pos %d", tokens[prior[i]].type, prior[i] - 1);
+      Log("domiant OP is %s at pos %d", tokens[prior[i]].str, prior[i] - 1);
       return prior[i] - 1;
     }
   Log("OP can't be found"); assert(0);
