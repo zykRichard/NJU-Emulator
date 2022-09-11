@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-
+extern word_t vaddr_read(vaddr_t addr, int len);
 static int is_batch_mode = false;
 
 void init_regex();
@@ -87,6 +87,27 @@ static int cmd_info(char *args) {
   return -1; 
 }
 
+static int cmd_p(char *args) {
+  bool flag = false;
+  word_t ans = expr(args, &flag);
+  if(flag) { printf("%d\n", ans); return ans; }
+  else printf("Error occurs in eval the expr\n");
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  char *arg = strtok(NULL, " ");
+  int N = 0;
+  vaddr_t addr;
+  sscanf(arg, "%d", &N);
+  arg = strtok(NULL, " ");
+  addr = (vaddr_t)cmd_p(arg);
+  for(int i = 0; i < N; i++) {
+    printf("0x%x  :  0x%x\n", addr, vaddr_read(addr, 4));
+    addr += 4;
+  } 
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -99,6 +120,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Steps N instructions, default by 1", cmd_si },
   { "info", "Access to the value of registers by giving arg 'r' or watchpoint by giving arg 'w' ", cmd_info },
+  { "p", "Eval the expression", cmd_p },
+  { "x", "Print N consecutive 4-bytes begun from EXPR", cmd_x },
   /* TODO: Add more commands */
 
 };
