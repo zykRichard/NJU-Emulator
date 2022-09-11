@@ -198,14 +198,15 @@ static bool check_parenthese(int p, int q) {
 
   // bracket matching judging:
   int cnt = 0;
-  for(int pr = p; pr <= q; pr ++){
+  for(int pr = p + 1; pr <= q - 1; pr ++){
+
+    if(tokens[pr].type == '(') cnt ++;
+    else if(tokens[pr].type == ')') cnt --;
+
     if(cnt < 0) {
       Log("Invalid parenthese match at %d", pr);
       return false;
     }
-
-    if(tokens[pr].type == '(') cnt ++;
-    else if(tokens[pr].type == ')') cnt --;
 
   }
   if(cnt == 0) return true;
