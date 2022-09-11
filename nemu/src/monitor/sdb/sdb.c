@@ -75,12 +75,12 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
   char *arg = strtok(NULL, " ");
   if(strcmp(arg, "r") == 0) {
-    printf("get r");
+    //printf("get r");
     isa_reg_display();
     return 0;
   }
   else if(strcmp(arg, "w") == 0) {
-    assert(0);
+    wp_display(); 
     return 0;
   }
   printf("Invalid Input\n");
@@ -108,6 +108,19 @@ static int cmd_x(char *args) {
   } 
   return 0;
 }
+
+static int cmd_w(char *args) {
+  add_wp(args);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  int idx;
+  sscanf(args, "%d", &idx);
+  del_wp(idx);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -122,6 +135,8 @@ static struct {
   { "info", "Access to the value of registers by giving arg 'r' or watchpoint by giving arg 'w' ", cmd_info },
   { "p", "Eval the expression", cmd_p },
   { "x", "Print N consecutive 4-bytes begun from EXPR", cmd_x },
+  { "w", "Set Watchingpoint", cmd_w },
+  { "d", "Delete watching point idx", cmd_d}
   /* TODO: Add more commands */
 
 };
