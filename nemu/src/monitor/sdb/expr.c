@@ -226,7 +226,7 @@ Level 8: logic_and &&
 */
 
 int find_op(int p, int q) {
-  int idx = p;
+  int idx = p + 1;
   int flag = 0;
   int prior[10];
   memset(prior, 0, sizeof(prior));
@@ -255,8 +255,8 @@ int find_op(int p, int q) {
 
   for(int i = 0; i < PRIORS; i++) 
     if(prior[i]) { 
-      Log("domiant OP is %c at pos %d", tokens[prior[i]].type, prior[i]);
-      return prior[i];
+      Log("domiant OP is %c at pos %d", tokens[prior[i]].type, prior[i] - 1);
+      return prior[i] - 1;
     }
   Log("OP can't be found"); assert(0);
 }
