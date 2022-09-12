@@ -77,6 +77,7 @@ static void execute(uint64_t n) {
     g_nr_guest_inst ++;
 
     #ifdef CONFIG_WATCHPOINT
+    Log("Watchpoint trace open!");
     trace_and_difftest(&s, cpu.pc);
     #endif
     if (nemu_state.state != NEMU_RUNNING) break;
