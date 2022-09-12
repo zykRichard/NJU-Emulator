@@ -20,4 +20,8 @@
 
 word_t expr(char *e, bool *success);
 
+/* Watching Points */
+void wp_display();
+void add_wp();
+void del_wp(int idx);
 #endif

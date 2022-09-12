@@ -24,8 +24,23 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
+  printf("get i\n");
+  for(int i = 0; i < 32; i++) 
+    printf("%s      %x      %d\n", regs[i], gpr(i), gpr(i));
+  return ;
 }
 
+// Get the value of the given register
 word_t isa_reg_str2val(const char *s, bool *success) {
-  return 0;
+  int ret = -1;
+  for(int i = 0; i < 32; i++) {
+    if(strcmp(s, regs[i]) == 0){
+      ret = gpr(i);
+      *success = 1;
+      return ret;
+    }
+  }
+  Assert(ret < 0, "Invalid Ret value");
+  printf("Register Not Found\n");
+  return ret;
 }

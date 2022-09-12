@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-
+extern word_t vaddr_read(vaddr_t addr, int len);
 static int is_batch_mode = false;
 
 void init_regex();
@@ -50,10 +50,85 @@ static int cmd_c(char *args) {
 
 static int cmd_q(char *args) {
   nemu_state.state = NEMU_QUIT;
+<<<<<<< HEAD
   return -1;
 }
 
 
+=======
+  return -1;
+}
+
+static int cmd_si(char *args) {
+  char *arg = strtok(NULL, " ");
+  if (arg) {
+    int cnt = 0;
+    sscanf(arg, "%d", &cnt);
+
+    if(cnt <= 0) {
+      printf("Invalid Input\n");
+      return -1;
+    }
+
+    cpu_exec(cnt);
+    return 0; 
+  }
+  // default by 1 
+  cpu_exec(1);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  if(strcmp(arg, "r") == 0) {
+    //printf("get r");
+    isa_reg_display();
+    return 0;
+  }
+  else if(strcmp(arg, "w") == 0) {
+    wp_display(); 
+    return 0;
+  }
+  printf("Invalid Input\n");
+  return -1; 
+}
+
+static int cmd_p(char *args) {
+  bool flag = false;
+  word_t ans = expr(args, &flag);
+  if(flag) { printf("%d\n", ans); return 0; }
+  else printf("Error occurs in eval the expr\n");
+  return -1;
+}
+
+static int cmd_x(char *args) {
+  char *arg = strtok(NULL, " ");
+  int N = 0;
+  bool flag = false;
+  vaddr_t addr;
+  sscanf(arg, "%d", &N);
+  arg = strtok(NULL, " ");
+  addr = expr(arg, &flag);
+  if(!flag) return -1;
+  for(int i = 0; i < N; i++) {
+    printf("0x%x  :  0x%x\n", addr, vaddr_read(addr, 4));
+    addr += 4;
+  } 
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  add_wp(args);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  int idx;
+  sscanf(args, "%d", &idx);
+  del_wp(idx);
+  return 0;
+}
+>>>>>>> pa1
 
 static int cmd_help(char *args);
 
@@ -65,8 +140,17 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+<<<<<<< HEAD
   
 
+=======
+  { "si", "Steps N instructions, default by 1", cmd_si },
+  { "info", "Access to the value of registers by giving arg 'r' or watchpoint by giving arg 'w' ", cmd_info },
+  { "p", "Eval the expression", cmd_p },
+  { "x", "Print N consecutive 4-bytes begun from EXPR", cmd_x },
+  { "w", "Set Watchingpoint", cmd_w },
+  { "d", "Delete watching point idx", cmd_d}
+>>>>>>> pa1
   /* TODO: Add more commands */
 
 };
