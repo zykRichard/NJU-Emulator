@@ -50,14 +50,10 @@ static int cmd_c(char *args) {
 
 static int cmd_q(char *args) {
   nemu_state.state = NEMU_QUIT;
-<<<<<<< HEAD
   return -1;
 }
 
 
-=======
-  return -1;
-}
 
 static int cmd_si(char *args) {
   char *arg = strtok(NULL, " ");
@@ -132,7 +128,6 @@ static int cmd_d(char *args) {
   del_wp(idx);
   return 0;
 }
->>>>>>> pa1
 
 static int cmd_help(char *args);
 
@@ -144,18 +139,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-<<<<<<< HEAD
-  
-
-=======
   { "si", "Steps N instructions, default by 1", cmd_si },
   { "info", "Access to the value of registers by giving arg 'r' or watchpoint by giving arg 'w' ", cmd_info },
   { "p", "Eval the expression", cmd_p },
   { "x", "Print N consecutive 4-bytes begun from EXPR", cmd_x },
   { "w", "Set Watchingpoint", cmd_w },
   { "d", "Delete watching point idx", cmd_d}
->>>>>>> pa1
-  /* TODO: Add more commands */
 
 };
 
