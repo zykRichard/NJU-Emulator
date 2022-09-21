@@ -88,6 +88,10 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_p(char *args) {
+  if(args == NULL) {
+    Log("Please input your expression");
+    return 0;
+  }
   bool flag = false;
   word_t ans = expr(args, &flag);
   if(flag) { printf("%d\n", ans); return 0; }
