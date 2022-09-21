@@ -204,7 +204,7 @@ static bool check_parenthese(int p, int q) {
     else if(tokens[pr].type == ')') cnt --;
 
     if(cnt < 0) {
-      Log("Invalid parenthese match at %d", pr);
+      //Log("Invalid parenthese match at %d", pr);
       return false;
     }
 
@@ -256,7 +256,7 @@ int find_op(int p, int q) {
 
   for(int i = 0; i < PRIORS; i++) 
     if(prior[i]) { 
-      Log("domiant OP is %s at pos %d", tokens[prior[i] - 1].str, prior[i] - 1);
+      //Log("domiant OP is %s at pos %d", tokens[prior[i] - 1].str, prior[i] - 1);
       return prior[i] - 1;
     }
   Log("OP can't be found"); assert(0);
