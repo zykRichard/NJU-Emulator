@@ -7,7 +7,7 @@
 // Return the length of string
 size_t strlen(const char *s) {
   size_t len = 0;
-  char *ch = s;
+  char *ch = (char *)s;
   while(*ch != '\0'){
     len ++;
     ch ++;
@@ -18,7 +18,7 @@ size_t strlen(const char *s) {
 // Copy src string to destination string
 char *strcpy(char *dst, const char *src) {
   char *pos = dst;
-  char *ch = src;
+  char *ch = (char *)src;
   while(*ch != '\0') {
     *dst = *ch;
     dst ++;
@@ -31,7 +31,7 @@ char *strcpy(char *dst, const char *src) {
 // Copy n bytes form src to dst
 char *strncpy(char *dst, const char *src, size_t n) {
   char *pos = dst;
-  char *ch = src;
+  char *ch = (char *)src;
   size_t i = 0;
   for(i = 0; i < n && *ch != '\0'; i++){
     *dst = *ch;
@@ -79,7 +79,7 @@ int strcmp(const char *s1, const char *s2) {
 int strncmp(const char *s1, const char *s2, size_t n) {
   size_t len1 = strlen(s1);
   size_t len2 = strlen(s2);
-  if(s1 <= n && s2 <= n) return strcmp(s1, s2);
+  if(len1 <= n && len2 <= n) return strcmp(s1, s2);
   else if(s1 > s2) return 1;
   else if(s1 < s2) return -1;
   else {
