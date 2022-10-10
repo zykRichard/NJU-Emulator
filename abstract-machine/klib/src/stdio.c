@@ -96,7 +96,7 @@ int sprintf(char *out, const char *fmt, ...) {
     fmt ++;
     out ++;
   }
-
+va_end(ap);
 return out - org;
 
 }
