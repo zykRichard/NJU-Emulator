@@ -38,7 +38,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
     dst ++;
     ch ++;
   }
-  for( ; i < n; i++) {
+  for( ; i <= n; i++) {
     *dst = '\0';
   }
   return pos;
