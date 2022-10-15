@@ -94,6 +94,7 @@ bool wp_difftest() {
       pr -> val = temp;
       return true;
     }
+    else pr = pr -> next;
   }
   return 0;
 }
