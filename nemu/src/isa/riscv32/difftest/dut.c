@@ -25,8 +25,8 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
     return false;
     }
   }
-  if(pc != cpu.pc) { Log("Difftest dectecting at pc : \n");
-                     Log("NEMU : 0x%x         REF : 0x%x", cpu.pc, ref_r -> pc);
+  if(pc != cpu.pc) { Log("Difftest dectecting at pc :\n  NEMU : 0x%x         REF : 0x%x", cpu.pc, ref_r -> pc);
+                     
                      return false;
   }
   return true;
