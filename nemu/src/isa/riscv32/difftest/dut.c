@@ -20,12 +20,12 @@ extern const char *regs[];
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   for(int i = 0; i < 32; i++){
     if(ref_r -> gpr[i] != gpr(i)){
-    Log("Difftest dectecting at gpr %s :\n", regs[i]);
+    Log("Difftest dectecting at gpr %s at PC 0x%x\n", regs[i], pc);
     Log("NEMU : %d       REF : %d", gpr(i), ref_r -> gpr[i]);
     return false;
     }
   }
-  if(pc != (vaddr_t)cpu.pc) { Log("Difftest dectecting at pc :\n  NEMU : 0x%x         REF : 0x%x", cpu.pc, ref_r -> pc);
+  if(ref_r -> pc != cpu.pc) { Log("Difftest dectecting at pc :\n  NEMU : 0x%x         REF : 0x%x", cpu.pc, ref_r -> pc);
                      
                      return false;
   }
