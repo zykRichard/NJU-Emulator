@@ -49,6 +49,7 @@ WP *new_wp() {
   WP *new = free_;
   free_ = free_ -> next;
   new -> next = head;
+  head = new;
   return new;
 }
 
