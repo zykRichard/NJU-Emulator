@@ -16,13 +16,18 @@
 #include <isa.h>
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
-
+extern const char *regs[];
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   for(int i = 0; i < 32; i++){
     if(ref_r -> gpr[i] != cpu.gpr[i])
+    Log("Difftest dectecting at gpr %s :\n", regs[i]);
+    Log("NEMU : %d       REF : %d", cpu.gpr[i], ref_r -> gpr[i]);
     return false;
   }
-  if(pc != cpu.pc) return false;
+  if(pc != cpu.pc) { Log("Difftest dectecting at pc : \n");
+                     Log("NEMU : 0x%x         REF : 0x%x", cpu.pc, ref_r -> pc);
+                     return false;
+  }
   return true;
 }
 
