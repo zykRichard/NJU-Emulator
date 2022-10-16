@@ -40,6 +40,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       switch(*fmt) {
         case 'd' :
           tmp = va_arg(ap, int);
+          if(tmp == 0) { *wr = '0'; wr ++; break; }
           while(tmp != 0) {
             buf[len] = (char) ( tmp % 10 + '0');
             len ++;
