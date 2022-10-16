@@ -45,8 +45,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             len ++;
             tmp = tmp / 10;
           }
-          len --;
-          while(len --){ *wr = buf[len]; wr ++;  }
+          while(len){ *wr = buf[--len]; wr ++;  }
           break;
 
         case 'x' :
