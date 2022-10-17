@@ -40,7 +40,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int y_bound = (y + h > max_h) ? max_h : y + h;
     
   for(int i = 0; i < y_bound - y; i++) {
-    memcpy(fb + start_id + i * max_w, pixels, x_bound - x);
+    memcpy(fb + start_id + i * max_w, pixels, (x_bound - x) * sizeof(uint32_t));
     pixels += w; 
   }
 
