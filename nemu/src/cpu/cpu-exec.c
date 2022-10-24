@@ -32,16 +32,18 @@ static bool g_print_step = false;
 extern bool wp_difftest();
 void device_update();
 
-#ifdef CONFIG_WATCHPOINT
+
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  #ifdef CONFIG_WATCHPOINT
   if( wp_difftest() ) nemu_state.state = NEMU_STOP ;
+  #endif
 }
-#endif
+
 
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
@@ -76,9 +78,9 @@ static void execute(uint64_t n) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
 
-    #ifdef CONFIG_WATCHPOINT
+    
     trace_and_difftest(&s, cpu.pc);
-    #endif
+    
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
