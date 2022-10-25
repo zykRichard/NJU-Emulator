@@ -23,7 +23,33 @@ static inline int check_reg_idx(int idx) {
   return idx;
 }
 
+static inline int csr_reg_chosen(int id) {
+  switch (id)
+  {
+  case 0x300:
+    return cpu.mstatus;
+    break;
+  
+  case 0x305:
+    return cpu.mtvec;
+    break;
+
+  case 0x341:
+    return cpu.mepc;
+    break;
+  
+  case 0x342:
+    return cpu.mcause;
+    break;
+
+  default:
+    panic("NO SUCH CSR !");
+    break;
+  }
+}
+
 #define gpr(idx) cpu.gpr[check_reg_idx(idx)]
+#define csr(id)  csr_reg_chosen(id)
 
 static inline const char* reg_name(int idx, int width) {
   extern const char* regs[];

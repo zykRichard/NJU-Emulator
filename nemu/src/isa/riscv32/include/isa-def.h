@@ -20,6 +20,12 @@
 
 typedef struct {
   word_t gpr[32];
+  /* CSR */
+  word_t mtvec;  // 0x305
+  word_t mepc;   // 0x341
+  word_t mstatus;// 0x300
+  word_t mcause; // 0x342
+
   vaddr_t pc;
 } riscv32_CPU_state;
 
