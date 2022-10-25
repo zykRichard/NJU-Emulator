@@ -50,7 +50,7 @@ static inline int csr_reg_chosen(int id) {
 } 
 
 #define gpr(idx) cpu.gpr[check_reg_idx(idx)]
-#define csr(id)  cpu.csregs[csr_reg_chosen(id)]
+#define csr(id)  csr_reg_chosen(id)
 
 static inline const char* reg_name(int idx, int width) {
   extern const char* regs[];

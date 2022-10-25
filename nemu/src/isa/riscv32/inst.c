@@ -34,7 +34,7 @@ enum {
 #define src1I(i) do { *src1 = i; } while (0)
 #define src2I(i) do { *src2 = i; } while (0)
 #define destI(i) do { *dest = i; } while (0)
-#define csrR(i)  do { *src2 = CS_R(i); } while(0)
+#define csr_code(i) do{ *src2 = i; } while (0)
 
 /*
 R I S B U J
@@ -60,7 +60,7 @@ static void decode_operand(Decode *s, word_t *dest, word_t *src1, word_t *src2, 
     case TYPE_J: src1I(immJ(i)); break;
     case TYPE_R: src1R(rs1); src2R(rs2); break;
     case TYPE_B: destI(immB(i)); src1R(rs1); src2R(rs2); break;
-    case TYPE_CSR: csrR(cs_r); src1R(rs1); break;  
+    case TYPE_CSR: csr_code(cs_r); src1R(rs1); break;  
   }
 }
 
@@ -128,7 +128,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 101 ????? 11000 11", bge    , B, s -> dnpc = (sword_t)src1 >= (sword_t)src2 ? cpu.pc + dest : s -> snpc);
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , B, s -> dnpc = src1 >= src2 ? cpu.pc + dest : s -> snpc);
   /***************************CSR Instructions**********************************/
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , CSR, NULL);
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , CSR, R(dest) = cpu.csregs[CS_R(src2)]; cpu.csregs[CS_R(src2)] = src1 );
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , CSR, NULL);
   INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , CSR, NULL);
 
