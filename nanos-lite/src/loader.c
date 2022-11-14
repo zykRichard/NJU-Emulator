@@ -20,6 +20,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   // read ELF header:
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
+  char *p = (char *)(&ELFheader);
+  printf("first 4 bytes:%c %c %c %c", p[0], p[1], p[2], p[3]);
   printf("magic is %x\n", (uint64_t)(* ELFheader.e_ident)); 
   // Judge:
   assert((uint32_t)(*ELFheader.e_ident) == 0x7f454c46);
