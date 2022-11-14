@@ -22,14 +22,18 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
   char *p = (char *)(&ELFheader);
   printf("first 4 bytes:%x %x %x %x", p[0], p[1], p[2], p[3]);
-  printf("magic is %x\n", (uint64_t)(* ELFheader.e_ident)); 
+  //printf("magic is %x\n", (uint64_t)(* ELFheader.e_ident)); 
   // Judge:
-  assert((uint32_t)(*ELFheader.e_ident) == 0x7f454c46);
+  //assert((uint32_t)(*ELFheader.e_ident) == 0x7f454c46);
 
   uintptr_t ret_addr = ELFheader.e_entry;
+  printf("ret addr is %p\n", ret_addr);
   size_t pro_off = ELFheader.e_phoff;
+  printf("Segment offset is %x\n", pro_off);
   size_t pro_num = ELFheader.e_phnum;
+  printf("Segment number is %x\n", pro_num);
   size_t pro_size = ELFheader.e_phentsize;
+  printf("Segment entry size is %x\n", pro_size);
 
   // read Segment headers and LOAD:
   for(int i = 0; i < pro_num; i++){
