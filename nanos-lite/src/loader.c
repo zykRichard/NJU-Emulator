@@ -22,7 +22,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
   printf("magic is %x\n", (uint32_t)(* ELFheader.e_ident)); 
   // Judge:
-  assert((uint32_t)ELFheader.e_ident == 0x464c457f);
+  assert((uint32_t)ELFheader.e_ident == 0x7f454c46);
 
   uintptr_t ret_addr = ELFheader.e_entry;
   size_t pro_off = ELFheader.e_phoff;
