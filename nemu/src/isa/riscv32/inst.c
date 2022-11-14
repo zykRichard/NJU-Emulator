@@ -24,7 +24,7 @@
 #define Mw vaddr_write
 
 enum {
-  TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B, TYPE_CSR,
+  TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B, TYPE_CSR, TYPE_CSRI,
   TYPE_N, // none
 };
 
@@ -44,7 +44,7 @@ static word_t immU(uint32_t i) { return BITS(i, 31, 12) << 12; }
 static word_t immS(uint32_t i) { return (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); }
 static word_t immJ(uint32_t i) { return (SEXT(BITS(i, 31, 31), 1) << 20) | (BITS(i, 19, 12) << 12) | (BITS(i, 20, 20) << 11) | (BITS(i, 30, 21) << 1);}
 static word_t immB(uint32_t i) { return (SEXT(BITS(i, 31, 31), 1) << 12) | (BITS(i, 7, 7) << 11) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1); }
-//static word_t immCSR(uint32_t i) { return ( ZEXT(BITS(i, 19, 15), 5)) ;}
+static word_t immCSR(uint32_t i) { return ( ZEXT(BITS(i, 19, 15), 5)) ;}
 
 static void decode_operand(Decode *s, word_t *dest, word_t *src1, word_t *src2, int type) {
   uint32_t i = s->isa.inst.val;
@@ -61,6 +61,7 @@ static void decode_operand(Decode *s, word_t *dest, word_t *src1, word_t *src2, 
     case TYPE_R: src1R(rs1); src2R(rs2); break;
     case TYPE_B: destI(immB(i)); src1R(rs1); src2R(rs2); break;
     case TYPE_CSR: csr_code(cs_r); src1R(rs1); break;  
+    case TYPE_CSRI: csr_code(cs_r); src1I(immCSR(i)); break;
   }
 }
 
@@ -128,9 +129,12 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 101 ????? 11000 11", bge    , B, s -> dnpc = (sword_t)src1 >= (sword_t)src2 ? cpu.pc + dest : s -> snpc);
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , B, s -> dnpc = src1 >= src2 ? cpu.pc + dest : s -> snpc);
   /***************************CSR Instructions**********************************/
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , CSR, R(dest) = cpu.csregs[CS_R(src2)]; cpu.csregs[CS_R(src2)] = src1 );
-  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , CSR, NULL);
-  INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , CSR, NULL);
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , CSR, R(dest) = CS_R(src2); CS_R(src2) = src1 );
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , CSR, R(dest) = CS_R(src2); CS_R(src2) = src1 | CS_R(src2));
+  INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , CSR, R(dest) = CS_R(src2); CS_R(src2) = (~ src1) & CS_R(src2));
+  INSTPAT("??????? ????? ????? 101 ????? 11100 11", csrrwi , CSRI, R(dest) = CS_R(src2); CS_R(src2) = src1);
+  INSTPAT("??????? ????? ????? 110 ????? 11100 11", csrrsi , CSRI, R(dest) = CS_R(src2); CS_R(src2) = src1 | CS_R(src2));
+  INSTPAT("??????? ????? ????? 111 ????? 11100 11", csrrci , CSRI, R(dest) = CS_R(src2); CS_R(src2) = (~ src1) & CS_R(src2));
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
