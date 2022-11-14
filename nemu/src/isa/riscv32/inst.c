@@ -18,6 +18,8 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+extern word_t isa_raise_intr(word_t NO, vaddr_t epc);
+
 #define R(i) gpr(i)
 #define CS_R(i) csr(i) 
 #define Mr vaddr_read
@@ -136,6 +138,8 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 110 ????? 11100 11", csrrsi , CSRI, R(dest) = CS_R(src2); CS_R(src2) = src1 | CS_R(src2));
   INSTPAT("??????? ????? ????? 111 ????? 11100 11", csrrci , CSRI, R(dest) = CS_R(src2); CS_R(src2) = (~ src1) & CS_R(src2));
 
+  /***************************SYSTEM*******************************************/
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s -> dnpc = isa_raise_intr(1, cpu.pc + 4));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
