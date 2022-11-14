@@ -6,7 +6,7 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 
-#define Max_fmt 1024
+#define Max_fmt 4096
 int tag[128]=
 {
 /*0x00*/	0,0,0,0,
