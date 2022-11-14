@@ -25,6 +25,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   char *str;
   char ch;
   int tmp;
+  unsigned int utmp;
   char buf[65]; int len = 0;
   char *wr = out;
   
@@ -50,23 +51,25 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
 
         case 'x' :
-          tmp = va_arg(ap, int);
-          while(tmp != 0) {
-            buf[len] = (char) (tmp % 16 + '0');
+          utmp = va_arg(ap, unsigned);
+          while(utmp != 0) {
+            if(utmp % 16 < 10) buf[len] = (char) (utmp % 16 + '0');
+            else buf[len] = (char) (utmp % 16 - 10 + 'a');
             len ++;
-            tmp = tmp / 16;
+            utmp = utmp / 16;
           }
           len --; 
           while(len--){*wr = buf[len]; wr++;}
           break;
 
         case 'p' :          
-          tmp = va_arg(ap, unsigned);
+          utmp = va_arg(ap, unsigned);
           { *wr = '0'; wr ++; *wr = 'x'; wr++; }
-          while(tmp != 0) {
-            buf[len] = (char) (tmp % 16 + '0');
+          while(utmp != 0) {
+            if(utmp % 16 < 10) buf[len] = (char) (utmp % 16 + '0');
+            else buf[len] = (char) (utmp % 16 - 10 + 'a');
             len ++;
-            tmp = tmp / 16;
+            utmp = utmp / 16;
           }
           len --;
           while(len --) {*wr = buf[len]; wr ++;}
