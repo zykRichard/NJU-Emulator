@@ -21,8 +21,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.csregs[2] = epc;
   cpu.csregs[3] = NO;
-  panic("test");
-  return 0;
+  
+  return cpu.csregs[1];
 }
 
 word_t isa_query_intr() {
