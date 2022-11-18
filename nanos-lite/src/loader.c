@@ -22,9 +22,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
   char *p = (char *)(&ELFheader);
   printf("first 4 bytes:%x %x %x %x", p[0], p[1], p[2], p[3]);
-  printf("magic is %c\n", (char )(ELFheader.e_ident[3])); 
+  //printf("magic is %c\n", (char )(ELFheader.e_ident[3])); 
   // Judge:
-  //assert((uint32_t)(*ELFheader.e_ident) == 0x7f454c46);
+  assert((uint32_t)(*ELFheader.e_ident) == 0x7f454c46);
 
   uintptr_t ret_addr = ELFheader.e_entry;
   printf("ret addr is %p\n", ret_addr);
