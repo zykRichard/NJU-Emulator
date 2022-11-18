@@ -24,7 +24,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("first 4 bytes:%x %x %x %x", p[0], p[1], p[2], p[3]);
   printf("magic is %x\n", *(uint32_t *)(ELFheader.e_ident)); 
   // Judge:
-  assert(*(uint32_t*)(ELFheader.e_ident) == 0x7f454c46);
+  assert(*(uint32_t*)(ELFheader.e_ident) == 0x464c457f);
 
   uintptr_t ret_addr = ELFheader.e_entry;
   printf("ret addr is %p\n", ret_addr);
