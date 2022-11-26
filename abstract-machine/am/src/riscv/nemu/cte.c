@@ -4,7 +4,7 @@
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
-#define SYS_EVENT ((c->mcause >= 0) && (c -> mcause < 20))
+#define SYSCALL_EVENT ((c->mcause >= 0) && (c -> mcause < 20))
 
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
@@ -13,7 +13,7 @@ Context* __am_irq_handle(Context *c) {
     // printf("mstatus is %p\n", c -> mstatus);
     // printf("mepc is %p\n", c -> mepc);
     
-    if(SYS_EVENT) ev.event = EVENT_SYSCALL;
+    if(SYSCALL_EVENT) ev.event = EVENT_SYSCALL;
     else 
     switch (c->mcause) {
       case -1 : 
