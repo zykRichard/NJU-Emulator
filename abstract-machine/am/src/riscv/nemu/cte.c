@@ -9,9 +9,9 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
-    printf("mcause is %p\n", c -> mcause);
-    printf("mstatus is %p\n", c -> mstatus);
-    printf("mepc is %p\n", c -> mepc);
+    // printf("mcause is %p\n", c -> mcause);
+    // printf("mstatus is %p\n", c -> mstatus);
+    // printf("mepc is %p\n", c -> mepc);
     
     if(SYS_EVENT) ev.event = EVENT_SYSCALL;
     else 
