@@ -47,25 +47,19 @@ void init_irq(void) {
 
 
 static void sys_exit(int code) { 
-  #ifdef CONFIG_STRACE 
   Log("sys_exit occurs");
-  #endif
 
   halt(code); 
 }
 
 static void sys_yield() { 
-  #ifdef CONFIG_STRACE
   Log("sys_yield occurs");
-  #endif
 
   yield(); 
 }
 
 static int sys_write(int fd, void *buf, size_t count) {
-  #ifdef CONFIG_STRACE
   Log("sys_write occurs");
-  #endif
 
   char *buf_wr = (char *)buf;
   if(fd == 1 || fd == 2)
