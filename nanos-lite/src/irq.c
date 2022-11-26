@@ -2,10 +2,10 @@
 
 static void do_syscall(Context* c) {
 
-  switch (c -> mcause)
+  switch (c -> GPR1)
   {
   case 0:         // exit
-    printf("exit syscall occurs\n"); 
+    halt(c -> GPR2);
     break;
   
   case 1:        // yield
