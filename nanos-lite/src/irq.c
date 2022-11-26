@@ -3,7 +3,7 @@
 static void sys_exit(int code); 
 static void sys_yield(); 
 static int sys_write(int fd, void *buf, size_t count);
-
+static int sys_brk();
 
 static void do_syscall(Context* c) {
 
@@ -19,6 +19,10 @@ static void do_syscall(Context* c) {
   
   case 4:        // write
     c -> GPRx = sys_write((int)(c -> GPR2), (void*)(c -> GPR3), (size_t)(c -> GPR4));
+    break;
+  
+  case 9:       // brk
+    c -> GPRx = sys_brk();
     break;
 
   default: printf("syscall#%d has not been implemented.\n", c -> mcause);
@@ -67,4 +71,10 @@ static int sys_write(int fd, void *buf, size_t count) {
     putch(buf_wr[i]);
 
   return count;
+}
+
+static int sys_brk() {
+  Log("sys_brk occurs");
+
+  return 0;
 }
