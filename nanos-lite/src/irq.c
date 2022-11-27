@@ -49,6 +49,7 @@ void init_irq(void) {
 }
 
 
+/****************************syscall********************************/
 
 static void sys_exit(int code) { 
   Log("sys_exit occurs");
