@@ -20,6 +20,7 @@ void do_syscall(Context *c) {
         break;
 
       case SYS_yield:
+        Log("hello");
         sys_yield();
         break;
 
