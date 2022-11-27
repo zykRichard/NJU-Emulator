@@ -1,10 +1,12 @@
 #include <common.h>
+#include <fs.h>
 #include "syscall.h"
 
 static void sys_exit(int code); 
 static void sys_yield(); 
 static int sys_write(int fd, void *buf, size_t count);
 static int sys_brk();
+static int sys_open(char* pathname, int flags, int modes);
 
 void do_syscall(Context *c) {
   uintptr_t arg[4];
@@ -20,7 +22,6 @@ void do_syscall(Context *c) {
         break;
 
       case SYS_yield:
-        Log("hello");
         sys_yield();
         break;
 
@@ -30,6 +31,10 @@ void do_syscall(Context *c) {
 
       case SYS_brk:
         c->GPRx = sys_brk();
+        break;
+
+      case SYS_open:
+        c->GPRx = sys_open((char *)arg[1], (int)arg[2], (int)arg[3]);
         break;
 
       default: printf("syscall#%d has not been implemented.\n", c -> mcause);
@@ -66,4 +71,10 @@ static int sys_brk() {
   Log("sys_brk occurs");
 
   return 0;
+}
+
+static int sys_open(char* pathname, int flags, int modes) {
+  Log("sys_open occurs");
+  
+  return fs_open(pathname, flags, modes);
 }

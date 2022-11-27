@@ -34,3 +34,17 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
+
+/********************************File System********************************/
+
+int fs_open(const char* pathname, int flag, int modes) {
+  int file_num = sizeof(file_table) / sizeof(Finfo);
+
+  for(int i = 0; i < file_num; i++)
+    if(strcmp(pathname, file_table[i].name) == 0)
+    return i;
+
+  Log("File does not exist.");
+  return -1;
+}
+
