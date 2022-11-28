@@ -64,7 +64,10 @@ size_t fs_read(int fd, void *buf, size_t len){
   size_t file_off = file_table[fd].file_offset;
   Log("reading %d bytes, offset is %p", len, file_off);
   file_table[fd].file_offset += len;
-  if(file_table[fd].file_offset > file_table[fd].size) return 0;
+  if(file_table[fd].file_offset > file_table[fd].size){ 
+    len = file_table[fd].size - file_off;
+    if(len <= 0) return 0;
+  }
   /***Reading len bytes from fd to buf***/
   ramdisk_read(buf, file_table[fd].disk_offset + file_off, len);
   return len;
