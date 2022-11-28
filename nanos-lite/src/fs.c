@@ -62,7 +62,7 @@ int fs_open(const char* pathname, int flag, int modes) {
 
 size_t fs_read(int fd, void *buf, size_t len){
   size_t file_off = file_table[fd].file_offset;
-  Log("reading %d bytes, offset is %p", len, file_off);
+  Log("reading %d bytes, offset is %d", len, file_off);
   file_table[fd].file_offset += len;
   if(file_table[fd].file_offset > file_table[fd].size){ 
     len = file_table[fd].size - file_off;
