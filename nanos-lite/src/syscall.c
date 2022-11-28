@@ -42,6 +42,7 @@ void do_syscall(Context *c) {
 
       case SYS_read:
         c->GPRx = sys_read((int)arg[1], (void*)arg[2], (size_t)arg[3]);
+        Log("arg3 is %d", arg[3]);
         break;
 
       case SYS_lseek:
@@ -98,7 +99,7 @@ static int sys_open(char* pathname, int flags, int modes) {
 
 static size_t sys_read(int fd, void *buf, size_t count) {
   Log("sys_read occurs");
-
+  Log("reading %p bytes", count); 
   size_t byte_read = fs_read(fd, buf, count);
   if(byte_read == 0) Log("file#%d : end of the file", fd);
 
