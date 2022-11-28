@@ -113,7 +113,7 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
   }
 
   file_table[fd].file_offset = tmp;  
-
+  Log("file offset is %d", tmp);
   return tmp;
 }
 
