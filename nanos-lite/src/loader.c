@@ -1,6 +1,6 @@
 #include <proc.h>
 #include <elf.h>
-
+#include <fs.h>
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
 # define Elf_Phdr Elf64_Phdr
@@ -12,11 +12,14 @@
 extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ELFheader;
   Elf_Phdr PROheader;
   memset(ELFheader.e_ident, 0xff, 4);
-  size_t base = 0;
+
+  int fd = fs_open(filename, 0, 0); 
+  size_t base = file_load(fd);
 
   // read ELF header:
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));

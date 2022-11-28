@@ -39,6 +39,10 @@ void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
 
+
+size_t file_load(int fd) {
+  return file_table[fd].disk_offset;
+}
 /********************************File System********************************/
 
 int fs_open(const char* pathname, int flag, int modes) {
