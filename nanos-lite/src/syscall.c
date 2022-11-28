@@ -74,7 +74,7 @@ static void sys_yield() {
 
 static int sys_write(int fd, void *buf, size_t count) {
   //Log("sys_write occurs");
-  //Log("writing %d bytes", count);
+  Log("writing %d bytes", count);
   char *buf_wr = (char *)buf;
   if(fd == 1 || fd == 2)
   for(int i = 0; i < count; i++)
