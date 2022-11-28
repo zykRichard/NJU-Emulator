@@ -24,7 +24,7 @@ int main() {
 
   for( i = 0; i < 500; i++) {
     fscanf(fp, "%d", &n);
-    printf("n is %d\n", n);
+    //printf("n is %d\n", n);
   }
 
   for (i = 500; i < 1000; i ++) {
