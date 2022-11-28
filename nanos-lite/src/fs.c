@@ -76,6 +76,8 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 size_t fs_write(int fd, const void *buf, size_t len) {
   size_t file_off = file_table[fd].file_offset;
+  if(file_off >= file_table[fd].size)
+    return 0;
 
   size_t wlen = (file_off + len > file_table[fd].file_offset) ? 
                 file_table[fd].file_offset - file_off : len;
