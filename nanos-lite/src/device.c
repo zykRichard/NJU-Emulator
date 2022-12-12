@@ -16,6 +16,9 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *);
+void __am_gpu_config(AM_GPU_CONFIG_T *);
+
+static int fb_width = 0, fb_height = 0;
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
   for(size_t i = 0; i < len; i++)
@@ -45,7 +48,12 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  return 0;
+  AM_GPU_CONFIG_T cfg;
+  __am_gpu_config(&cfg);
+  fb_width = cfg.width;
+  fb_height = cfg.height;
+  int retlen = sprintf(buf, "WIDTH : %d\nHEIGHT : %d", fb_width, fb_height);
+  return retlen;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
