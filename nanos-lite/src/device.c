@@ -17,6 +17,7 @@ static const char *keyname[256] __attribute__((used)) = {
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *);
 void __am_gpu_config(AM_GPU_CONFIG_T *);
+void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *);
 
 static int fb_width = 0, fb_height = 0;
 
