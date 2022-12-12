@@ -53,7 +53,7 @@ void do_syscall(Context *c) {
         c->GPRx = sys_close((int)arg[1]);
         break;
 
-      default: printf("syscall#%d has not been implemented.\n", c -> mcause);
+      default: panic("syscall#%d has not been implemented.\n", c -> mcause);
         break;
   }
 }
