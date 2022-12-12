@@ -44,7 +44,7 @@ void do_syscall(Context *c) {
 
       case SYS_read:
         c->GPRx = sys_read((int)arg[1], (void*)arg[2], (size_t)arg[3]);
-        Log("arg3 is %d", arg[3]);
+        //Log("arg3 is %d", arg[3]);
         break;
 
       case SYS_lseek:
@@ -73,7 +73,7 @@ static void sys_exit(int code) {
 }
 
 static void sys_yield() { 
-  Log("sys_yield occurs");
+  //Log("sys_yield occurs");
 
   yield(); 
 }
@@ -92,19 +92,19 @@ static int sys_write(int fd, void *buf, size_t count) {
 }
 
 static int sys_brk() {
-  Log("sys_brk occurs");
+  //Log("sys_brk occurs");
 
   return 0;
 }
 
 static int sys_open(char* pathname, int flags, int modes) {
-  Log("sys_open occurs");
+  //Log("sys_open occurs");
   
   return fs_open(pathname, flags, modes);
 }
 
 static size_t sys_read(int fd, void *buf, size_t count) {
-  Log("sys_read occurs");
+  //Log("sys_read occurs");
   //Log("reading %p bytes", count); 
   size_t byte_read = fs_read(fd, buf, count);
   if(byte_read <= 0) {
@@ -115,7 +115,7 @@ static size_t sys_read(int fd, void *buf, size_t count) {
 }
 
 static off_t sys_lseek(int fd, off_t offset, int whence) {
-  Log("sys_lseek occurs");
+  //Log("sys_lseek occurs");
 
   off_t ret = fs_lseek(fd, offset, whence);
   
