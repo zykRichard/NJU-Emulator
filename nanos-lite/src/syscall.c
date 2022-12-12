@@ -1,5 +1,6 @@
 #include <common.h>
 #include <fs.h>
+#include <sys/time.h>
 #include "syscall.h"
 
 static void sys_exit(int code); 
@@ -10,6 +11,7 @@ static int sys_open(char* pathname, int flags, int modes);
 static size_t sys_read(int fd, void *buf, size_t count);
 static off_t sys_lseek(int fd, off_t offset, int whence);
 static int sys_close(int fd);
+static int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 void do_syscall(Context *c) {
   uintptr_t arg[4];
@@ -51,6 +53,10 @@ void do_syscall(Context *c) {
 
       case SYS_close:
         c->GPRx = sys_close((int)arg[1]);
+        break;
+
+      case SYS_gettimeofday:
+        c->GPRx = sys_gettimeofday((struct timeval *)arg[1], (struct timezone *)arg[2]);
         break;
 
       default: panic("syscall#%d has not been implemented.\n", c -> mcause);
@@ -119,4 +125,13 @@ static off_t sys_lseek(int fd, off_t offset, int whence) {
 static int sys_close(int fd) {
   fs_close(fd);
   return 0;
+}
+
+static int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+  uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  tv -> tv_sec = us / 1000000;
+  tv -> tv_usec = us;
+  return 0;
+
+  /* always success, regardless tz*/
 }
