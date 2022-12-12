@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <sys/time.h>
+#include <NDL.h>
+
 int main(){
+    NDL_Init(0);
     int cnt = 0;
-    struct timeval tv1;
-    struct timeval tv2;
-    gettimeofday(&tv1, NULL);
+    uint32_t timer = NDL_GetTicks();
     while(1){
-        gettimeofday(&tv2, NULL);
-        if(tv2.tv_sec - tv1.tv_sec >= 1){
-            tv1 = tv2;
-            printf("Hello world from %d\n", cnt);
-            cnt ++;
-        }
+        uint32_t new_timer = NDL_GetTicks();
+        if(new_timer - timer >= 1000) {
+        printf("Hello World from %d\n", cnt);
+        cnt ++;
+        timer = new_timer;
+       } 
     }
     return 0;
 }
