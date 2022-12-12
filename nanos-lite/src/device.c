@@ -1,4 +1,5 @@
 #include <common.h>
+#include <am.h>
 
 #if defined(MULTIPROGRAM) && !defined(TIME_SHARING)
 # define MULTIPROGRAM_YIELD() yield()
@@ -14,6 +15,8 @@ static const char *keyname[256] __attribute__((used)) = {
   AM_KEYS(NAME)
 };
 
+void __am_input_keybrd(AM_INPUT_KEYBRD_T *);
+
 size_t serial_write(const void *buf, size_t offset, size_t len) {
   for(size_t i = 0; i < len; i++)
     putch(*((char *)buf + i));
@@ -21,6 +24,23 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  AM_INPUT_KEYBRD_T kbd;
+  __am_input_keybrd(&kbd);
+
+  if(kbd.keycode == AM_KEY_NONE){
+    *(char *)buf = 0;
+    return 0;
+  }  
+
+  char str[64];
+  memset(str, 0, sizeof(str));
+  if(kbd.keydown) strcpy(str, "kd ");
+  else strcpy(str, "ku ");
+
+  strcpy(str + 3, keyname[kbd.keycode]);
+  strncpy(buf, str, len);
+  return len;
+
   return 0;
 }
 
