@@ -15,6 +15,11 @@ static int screen_w = 0, screen_h = 0;
 struct timeval boot;
 struct timeval systime;
 
+static int fb_w = 0, fb_h = 0;
+static int cv_w = 0, cv_h = 0;
+static int ord_x = 0, ord_y = 0;
+
+
 uint32_t NDL_GetTicks() {
   
   gettimeofday(&systime, NULL);
@@ -73,6 +78,23 @@ int NDL_Init(uint32_t flags) {
   /* init time */
   gettimeofday(&boot, NULL);
 
+  /* init fb */
+  int fd = open("/proc/dispinfo", O_RDONLY, 0);
+  char buf[64] = {0};
+  read(fd, buf, sizeof(buf));
+
+  char *cur = buf;
+  int flag = 1;
+  while(*cur != 0) {
+    if(*cur >= '0' && *cur <= '9')
+      if(flag) fb_w = fb_w * 10 + (*cur - '0');
+      else fb_h = fb_h * 10 + (*cur - '0');
+    else if(*cur = '\n')
+      flag = 0;
+    else cur++;
+  }
+
+  printf("width is %d, height is %d\n", fb_w, fb_h);
   return 0;
 }
 
