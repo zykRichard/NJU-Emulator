@@ -15,7 +15,7 @@ static int screen_w = 0, screen_h = 0;
 struct timeval boot;
 struct timeval systime;
 
-int fb_w = 0, fb_h = 0;
+static int fb_w = 0, fb_h = 0;
 static int cv_w = 0, cv_h = 0;
 static int ord_x = 0, ord_y = 0;
 
@@ -89,7 +89,7 @@ int NDL_Init(uint32_t flags) {
   while(*cur != 0) {
     printf("now cur is %c\n", *cur);
     if(*cur >= '0' && *cur <= '9'){
-      if(flag) fb_h = fb_h * 10 + (*cur - '0');
+      if(flag) fb_w = fb_w * 10 + (*cur - '0');
       else fb_h = fb_h * 10 + (*cur - '0');
       printf("now width is %d, height is %d\n", fb_w, fb_h);
     }
