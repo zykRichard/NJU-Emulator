@@ -51,9 +51,29 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+
+  if(*w == 0 && *h == 0){
+    *w = fb_w;
+    *h = fb_h;
+  }
+  cv_w = *w, cv_h = *h;
+
+  ord_x = (fb_w - cv_w) / 2;
+  ord_y = (fb_h - cv_h) / 2;
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  if(x == 0 && y == 0 && w == 0 && h == 0){
+    x = 0; y = 0;
+    w = cv_w; h = cv_h;
+  }
+  int fd = open("/dev/fb", O_WRONLY, 0);
+  for(int i = ord_y; i < h + ord_y ; i++){
+    int offset = x + ord_x + fb_w * (y + i);
+    lseek(fd, 4 * offset, SEEK_SET);
+    write(fd, pixels, 4 * w);
+    pixels += w;
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -87,12 +107,12 @@ int NDL_Init(uint32_t flags) {
   int flag = 1;
   fb_w = 0, fb_h = 0;
   while(*cur != 0) {
-    printf("flag is %d\n", flag);
-    printf("now cur is %c\n", *cur);
+    //printf("flag is %d\n", flag);
+    //printf("now cur is %c\n", *cur);
     if(*cur >= '0' && *cur <= '9'){
       if(flag) fb_w = fb_w * 10 + (*cur - '0');
       else fb_h = fb_h * 10 + (*cur - '0');
-      printf("now width is %d, height is %d\n", fb_w, fb_h);
+      //printf("now width is %d, height is %d\n", fb_w, fb_h);
     }
     else if(*cur == '\n')
       flag = 0;
