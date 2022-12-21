@@ -53,7 +53,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   __am_gpu_config(&cfg);
   fb_width = cfg.width;
   fb_height = cfg.height;
-  int retlen = sprintf(buf, "WIDTH : %d\nHEIGHT:%d", fb_width, fb_height);
+  int retlen = sprintf(buf, "WIDTH : %d\nHEIGHT : %d", fb_width, fb_height);
   return retlen;
 }
 
