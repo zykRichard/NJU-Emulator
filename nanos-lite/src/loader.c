@@ -42,9 +42,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for(int i = 0; i < pro_num; i++){
 
     ramdisk_read((void *)(&PROheader), base + pro_off + i * pro_size, pro_size);
-    if(PROheader.p_type == PT_LOAD)
+    if(PROheader.p_type == PT_LOAD){
+      printf("In proheader %d, offset is %d, size is %d\n", i, PROheader.p_offset, PROheader.p_memsz);
       ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_memsz);
-    
+    }    
   }  
 
   return ret_addr;
