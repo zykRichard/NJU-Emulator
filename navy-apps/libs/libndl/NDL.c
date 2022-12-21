@@ -86,9 +86,11 @@ int NDL_Init(uint32_t flags) {
   char *cur = buf;
   int flag = 1;
   while(*cur != 0) {
-    if(*cur >= '0' && *cur <= '9')
+    if(*cur >= '0' && *cur <= '9'){
       if(flag) fb_w = fb_w * 10 + (*cur - '0');
       else fb_h = fb_h * 10 + (*cur - '0');
+      printf("now width is %d, height is %d\n", fb_w, fb_h);
+    }
     else if(*cur = '\n')
       flag = 0;
     
