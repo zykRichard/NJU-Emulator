@@ -4,15 +4,130 @@
 #include <string.h>
 #include <stdlib.h>
 
+static uint32_t render_buf[800 * 600];
+
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  
+  /* coordinates */
+  int sx, sy, sw, sh;
+  int dx, dy;
+
+  if(srcrect) {
+    sx = srcrect -> x;
+    sy = srcrect -> y;
+    sw = srcrect -> w;
+    sh = srcrect -> h;
+  }
+  else {
+    sx = 0, sy = 0;
+    sw = src -> w;
+    sh = src -> h;
+  }
+
+  if(dstrect) {
+    dx = dstrect -> x;
+    dy = dstrect -> y;
+  }
+  else {
+    dx = 0, dy = 0;
+  }
+
+  if(dst -> format -> palette && src -> format -> palette) {
+    uint8_t *spixel = (uint8_t *)(src -> pixels);
+    uint8_t *dpixel = (uint8_t *)(dst -> pixels);
+    
+    for(int i = dy ; i < dy + sh && i < dst -> h; i++){
+      for(int j = dx; j < dx + sw && j < dst -> w; j++){
+        int y_ord = i - dy + sy;
+        int x_ord = j - dx + sx;
+        int tol_ord = *(spixel + y_ord *(src -> w) + x_ord);
+        uint32_t src_val = src -> format -> palette -> colors[tol_ord].val;
+        
+        uint8_t dst_ord = 0;
+        if(dst -> format -> palette -> colors[tol_ord].val == src_val)
+          dst_ord = tol_ord;
+        else {
+          for(uint8_t k = 0; k < dst -> format -> palette -> ncolors; k++)
+            if(dst -> format -> palette -> colors[k].val == src_val){
+              dst_ord = k;
+              break;
+            }
+        }
+        *(dpixel + i * (dst -> w) + j) = dst_ord;
+      }
+    }
+  }
+  else {
+    uint32_t *spixel = (uint32_t *)(src -> pixels);
+    uint32_t *dpixel = (uint32_t *)(src -> pixels);
+    for(int i = dy; i < dy + sh && i < dst -> h; i++)
+      for(int j = dx; j < dx + sw && j < dst -> w; j++)
+        *(dpixel + i *(dst -> w) + j) = *(spixel + (i - dy + sy) * (src -> w) + (j - dx + sx));
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  assert(dst);
+  int dx, dy, dw, dh;
+  if(dstrect) {
+    dx = dstrect -> x;
+    dy = dstrect -> y;
+    dw = dstrect -> w;
+    dh = dstrect -> h;
+  }
+  else {
+    dx = 0; dy = 0; dw = dst -> w; dh = dst -> h;
+  }
+
+  if(dst -> format -> palette) {
+    uint8_t idx = 0; 
+    for(int i = 0; i < dst -> format -> palette -> ncolors ; i++)
+      if(dst -> format -> palette -> colors[i].val == color) {
+        idx = color;
+        break;
+      }
+
+    uint8_t* pixel = (uint8_t*)(dst -> pixels);
+    for(int i = dy; i < dy + dh && i < dst -> h; i++)
+      for(int j = dx; j < dx + dw && j < dst -> w ; j++)
+        *(pixel + i * (dst -> w) + j) = idx;
+  }
+  else {
+    uint32_t *pixel = (uint32_t*)(dst -> pixels);
+    for(int i = dy; i < dy + dh && i < dst -> h; i++) 
+      for(int j = dx; j < dx + dw && j < dst -> w; j++)
+        *(pixel + i * (dst -> w) + j) = color;
+  }
 }
 
+
+
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  assert(s);
+  if(s -> format -> palette){
+    int sw, sh;
+    if(w == 0 && h == 0 && x == 0 && y == 0){
+      sw = s -> w; sh = s -> h;
+    }
+    else {
+      sw = w; sh = h;
+    }
+
+    uint8_t *pixels = s->pixels;
+    for(int i = 0; i < sh; i++)
+      for(int j = 0; j < sw; j++){
+        render_buf[i * sw + j] = (s -> format -> palette -> 
+                                 colors[*(pixels + (y + i) * (s->w) + x + j)].r << 16) 
+                               + (s -> format -> palette -> 
+                                 colors[*(pixels + (y + i) * (s->w) + x + j)].g << 8)
+                               + (s -> format -> palette -> 
+                                 colors[*(pixels + (y + i) * (s->w) + x + j)].b);
+      }
+    NDL_DrawRect(render_buf, x, y, sw, sh);
+  }
+  else NDL_DrawRect((uint32_t*)(s -> pixels), x, y, w, h);
 }
 
 // APIs below are already implemented.
