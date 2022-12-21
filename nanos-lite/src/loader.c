@@ -20,7 +20,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   int fd = fs_open(filename, 0, 0); 
   size_t base = file_load(fd);
-  Log("base is %p", base);
+  Log("base is %d", base);
   // read ELF header:
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
   //char *p = (char *)(&ELFheader);
