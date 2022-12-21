@@ -30,13 +30,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   assert(*(uint32_t*)(ELFheader.e_ident) == 0x464c457f);
 
   uintptr_t ret_addr = ELFheader.e_entry;
-  //printf("ret addr is %p\n", ret_addr);
+  printf("ret addr is %p\n", ret_addr);
   size_t pro_off = ELFheader.e_phoff;
-  //printf("Segment offset is %x\n", pro_off);
+  printf("Segment offset is %x\n", pro_off);
   size_t pro_num = ELFheader.e_phnum;
-  //printf("Segment number is %x\n", pro_num);
+  printf("Segment number is %x\n", pro_num);
   size_t pro_size = ELFheader.e_phentsize;
-  //printf("Segment entry size is %x\n", pro_size);
+  printf("Segment entry size is %x\n", pro_size);
 
   // read Segment headers and LOAD:
   for(int i = 0; i < pro_num; i++){
