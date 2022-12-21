@@ -94,7 +94,7 @@ int NDL_Init(uint32_t flags) {
       else fb_h = fb_h * 10 + (*cur - '0');
       printf("now width is %d, height is %d\n", fb_w, fb_h);
     }
-    else if(*cur = '\n')
+    else if(*cur == '\n')
       flag = 0;
     
     cur++;
