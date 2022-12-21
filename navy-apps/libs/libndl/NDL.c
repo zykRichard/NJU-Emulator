@@ -77,4 +77,5 @@ int NDL_Init(uint32_t flags) {
 }
 
 void NDL_Quit() {
+  boot.tv_sec = boot.tv_usec = 0;
 }

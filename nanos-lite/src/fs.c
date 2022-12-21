@@ -71,7 +71,7 @@ int fs_open(const char* pathname, int flag, int modes) {
 
 
 size_t fs_read(int fd, void *buf, size_t len){
-  if(fd == FD_EVENTS) return file_table[fd].read(buf, 0, len);
+  if(fd == FD_EVENTS || fd == FD_DISPINFO) return file_table[fd].read(buf, 0, len);
   size_t file_off = file_table[fd].file_offset;
   //Log("reading %d bytes, offset is %d", len, file_off);
 
@@ -90,6 +90,12 @@ size_t fs_read(int fd, void *buf, size_t len){
 size_t fs_write(int fd, const void *buf, size_t len) {
   if(fd == FD_STDOUT || fd == FD_STDERR)
     return file_table[fd].write(buf, 0, len);
+  
+  else if(fd == FD_FB) {
+    int retlen = file_table[fd].write(buf, file_table[fd].file_offset, len);
+    file_table[fd].file_offset += retlen;
+    return retlen;
+  }
 
   size_t file_off = file_table[fd].file_offset;
   if(file_off >= file_table[fd].size)
