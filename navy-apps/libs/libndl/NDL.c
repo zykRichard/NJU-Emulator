@@ -82,7 +82,7 @@ int NDL_Init(uint32_t flags) {
   int fd = open("/proc/dispinfo", O_RDONLY, 0);
   char buf[64] = {0};
   read(fd, buf, sizeof(buf));
-
+  printf("%s\n", buf);
   char *cur = buf;
   int flag = 1;
   while(*cur != 0) {
