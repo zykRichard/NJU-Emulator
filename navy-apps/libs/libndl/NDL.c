@@ -85,6 +85,7 @@ int NDL_Init(uint32_t flags) {
   printf("%s\n", buf);
   char *cur = buf;
   int flag = 1;
+  fb_w = 0, fb_h = 0;
   while(*cur != 0) {
     if(*cur >= '0' && *cur <= '9'){
       if(flag) fb_w = fb_w * 10 + (*cur - '0');
