@@ -92,6 +92,7 @@ int NDL_Init(uint32_t flags) {
     else if(*cur = '\n')
       flag = 0;
     else cur++;
+    printf("width is %d, height is %d\n", fb_w, fb_h);
   }
 
   printf("width is %d, height is %d\n", fb_w, fb_h);
