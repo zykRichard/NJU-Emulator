@@ -15,7 +15,7 @@ static int screen_w = 0, screen_h = 0;
 struct timeval boot;
 struct timeval systime;
 
-static int fb_w = 0, fb_h = 0;
+int fb_w = 0, fb_h = 0;
 static int cv_w = 0, cv_h = 0;
 static int ord_x = 0, ord_y = 0;
 
