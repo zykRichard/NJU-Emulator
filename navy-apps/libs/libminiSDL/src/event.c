@@ -26,9 +26,9 @@ int SDL_PollEvent(SDL_Event *ev) {
   buf[strlen(buf) - 1] = 0;
   if(buf[1] == 'u') ev -> type = SDL_KEYUP;
   else if(buf[1] == 'd') ev -> type = SDL_KEYDOWN;
-  printf("key name is %s\n", &buf[3]);
+  //printf("key name is %s\n", &buf[3]);
   for(int i = 1; i < sizeof(keyname) / sizeof(char*); i++){
-    printf("now compare key %s\n", keyname[i]);
+    //printf("now compare key %s\n", keyname[i]);
     if(strcmp(keyname[i], &buf[3]) == 0) {
       ev -> key.keysym.sym = i;
       switch(ev -> type) {
@@ -47,8 +47,9 @@ int SDL_WaitEvent(SDL_Event *event) {
   buf[strlen(buf) - 1] = 0;
   if(buf[1] == 'u') event -> type = SDL_KEYUP;
   else if(buf[1] == 'd') event -> type = SDL_KEYDOWN;
-  
-  for(int i = 1; i < sizeof(keyname) / sizeof(char*); i++)
+  printf("key name is %s\n", &buf[3]); 
+  for(int i = 1; i < sizeof(keyname) / sizeof(char*); i++){
+    printf("now compare key %s\n", keyname[i]);
     if(strcmp(keyname[i], &buf[3]) == 0) {
       event -> key.keysym.sym = i;
       switch(event -> type) {
@@ -57,6 +58,7 @@ int SDL_WaitEvent(SDL_Event *event) {
       }
       return 1;
     }
+  }
   assert(0);
 }
 
