@@ -45,6 +45,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if(PROheader.p_type == PT_LOAD){
       printf("In proheader %d, offset is %d, size is %d\n", i, PROheader.p_offset, PROheader.p_memsz);
       ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_memsz);
+      memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
     }    
   }  
 

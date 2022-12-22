@@ -9,8 +9,8 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <assert.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL.h>
 #include <SDL_bmp.h>
 #include <SDL_bdf.h>
