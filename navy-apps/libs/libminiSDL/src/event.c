@@ -41,6 +41,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 int SDL_WaitEvent(SDL_Event *event) {
   char buf[64] = {0};
   while(NDL_PollEvent(buf, sizeof(buf)) == 0);
+  printf("buf is %s\n", buf);
   buf[strlen(buf) - 1] = 0;
   if(buf[1] == 'u') event -> type = SDL_KEYUP;
   else if(buf[1] == 'd') event -> type = SDL_KEYDOWN;
