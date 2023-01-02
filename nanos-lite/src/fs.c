@@ -78,6 +78,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   file_table[fd].file_offset += len;
   if(file_table[fd].file_offset > file_table[fd].size){ 
     len = file_table[fd].size - file_off;
+    Log("len is %d", len);
     if(len <= 0) return 0;
   }
   /***Reading len bytes from fd to buf***/
