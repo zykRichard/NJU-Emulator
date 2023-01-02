@@ -105,10 +105,10 @@ static int sys_open(char* pathname, int flags, int modes) {
 
 static size_t sys_read(int fd, void *buf, size_t count) {
   Log("sys_read occurs");
-  //Log("reading %p bytes", count); 
+  Log("reading %p bytes from file %d", count, fd); 
   size_t byte_read = fs_read(fd, buf, count);
   if(byte_read <= 0) {
-    //Log("file#%d : end of the file", fd);
+    Log("file#%d : end of the file", fd);
     return 0;
   }
   return byte_read;
