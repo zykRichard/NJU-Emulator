@@ -78,6 +78,8 @@ uint8_t* SDL_GetKeyState(int *numkeys) {
     case SDL_KEYDOWN:
       sdl_keystate[ev.key.keysym.sym] = 1;
       break;
+
+    default: break;
     }
   }
   return sdl_keystate;
