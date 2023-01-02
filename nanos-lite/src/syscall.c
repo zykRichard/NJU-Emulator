@@ -107,6 +107,7 @@ static size_t sys_read(int fd, void *buf, size_t count) {
   Log("sys_read occurs");
   Log("reading %p bytes from file %d", count, fd); 
   size_t byte_read = fs_read(fd, buf, count);
+  printf("read bytes %d\n", byte_read);
   if(byte_read <= 0) {
     Log("file#%d : end of the file", fd);
     return 0;
