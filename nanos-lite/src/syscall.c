@@ -77,7 +77,10 @@ void do_syscall(Context *c) {
 static void sys_exit(int code) { 
   //Log("sys_exit occurs");
 
-  halt(code); 
+  //halt(code);
+  sys_execve("/bin/menu", NULL, NULL);
+
+  halt(code);
 }
 
 static void sys_yield() { 
