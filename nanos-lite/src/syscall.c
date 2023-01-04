@@ -1,6 +1,7 @@
 #include <common.h>
 #include <fs.h>
 #include <sys/time.h>
+#include <proc.h>
 #include "syscall.h"
 
 static void sys_exit(int code); 
@@ -12,6 +13,9 @@ static size_t sys_read(int fd, void *buf, size_t count);
 static off_t sys_lseek(int fd, off_t offset, int whence);
 static int sys_close(int fd);
 static int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
+static int sys_execve(const char* pathname, char *argv[], char *envp[]);
+
+extern void naive_uload(PCB *pcb, const char *filename);
 
 void do_syscall(Context *c) {
   uintptr_t arg[4];
@@ -57,6 +61,10 @@ void do_syscall(Context *c) {
 
       case SYS_gettimeofday:
         c->GPRx = sys_gettimeofday((struct timeval *)arg[1], (struct timezone *)arg[2]);
+        break;
+
+      case SYS_execve:
+        c->GPRx = sys_execve((char *)arg[1], (char **)arg[2], (char **)arg[3]);
         break;
 
       default: panic("syscall#%d has not been implemented.\n", c -> mcause);
@@ -135,4 +143,10 @@ static int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
   return 0;
 
   /* always success, regardless tz*/
+}
+
+static int sys_execve(const char* pathname, char *argv[], char *envp[]) {
+  if(fs_open(pathname, 0, 0) == -1) return -1;
+  naive_uload(NULL, pathname);
+  return 0;
 }
