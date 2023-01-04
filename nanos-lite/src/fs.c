@@ -73,17 +73,17 @@ int fs_open(const char* pathname, int flag, int modes) {
 size_t fs_read(int fd, void *buf, size_t len){
   if(fd == FD_EVENTS || fd == FD_DISPINFO) return file_table[fd].read(buf, 0, len);
   size_t file_off = file_table[fd].file_offset;
-  Log("reading %d bytes, offset is %d", len, file_off);
+  //Log("reading %d bytes, offset is %d", len, file_off);
 
   file_table[fd].file_offset += len;
   if(file_table[fd].file_offset > file_table[fd].size){ 
     long lenth = file_table[fd].size - file_off;
-    Log("len is %p", lenth);
+    //Log("len is %p", lenth);
     if(lenth <= 0) return 0;
   }
   /***Reading len bytes from fd to buf***/
   len = ramdisk_read(buf, file_table[fd].disk_offset + file_off, len);
-  Log("len is %p\n", len);  
+  //Log("len is %p\n", len);  
   return len;
 }
 

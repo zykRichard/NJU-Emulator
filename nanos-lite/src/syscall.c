@@ -67,7 +67,7 @@ void do_syscall(Context *c) {
 /****************************syscall********************************/
 
 static void sys_exit(int code) { 
-  Log("sys_exit occurs");
+  //Log("sys_exit occurs");
 
   halt(code); 
 }
@@ -79,7 +79,7 @@ static void sys_yield() {
 }
 
 static int sys_write(int fd, void *buf, size_t count) {
-  Log("sys_write occurs");
+  //Log("sys_write occurs");
   //Log("writing %d bytes", count);
   char *buf_wr = (char *)buf;
   if(fd == 1 || fd == 2)
@@ -92,22 +92,22 @@ static int sys_write(int fd, void *buf, size_t count) {
 }
 
 static int sys_brk() {
-  Log("sys_brk occurs");
+  //Log("sys_brk occurs");
 
   return 0;
 }
 
 static int sys_open(char* pathname, int flags, int modes) {
-  Log("sys_open occurs");
+  //Log("sys_open occurs");
   
   return fs_open(pathname, flags, modes);
 }
 
 static size_t sys_read(int fd, void *buf, size_t count) {
-  Log("sys_read occurs");
-  Log("reading %p bytes from file %d", count, fd); 
+  //Log("sys_read occurs");
+  //Log("reading %p bytes from file %d", count, fd); 
   size_t byte_read = fs_read(fd, buf, count);
-  printf("read bytes %d\n", byte_read);
+  //printf("read bytes %d\n", byte_read);
   if(byte_read <= 0) {
     Log("file#%d : end of the file", fd);
     return 0;
@@ -116,7 +116,7 @@ static size_t sys_read(int fd, void *buf, size_t count) {
 }
 
 static off_t sys_lseek(int fd, off_t offset, int whence) {
-  Log("sys_lseek occurs");
+  //Log("sys_lseek occurs");
 
   off_t ret = fs_lseek(fd, offset, whence);
   
