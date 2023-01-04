@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <NDL.h>
 #include <BMP.h>
 
@@ -15,6 +16,7 @@ int main() {
   free(bmp);
   NDL_Quit();
   printf("Test ends! Spinning...\n");
+  execve("/bin/pal", NULL, NULL);
   while (1);
   return 0;
 }
