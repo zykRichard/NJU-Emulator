@@ -90,7 +90,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   int argc = 0;
   while(argv[argc])
     argc ++ ;
-  printf("argc loading over\n");
+  printf("argc %d loading over\n", argc);
 
   int envc = 0;
   while(envp[envc])
