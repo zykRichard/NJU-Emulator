@@ -16,6 +16,8 @@ static int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 static int sys_execve(const char* pathname, char *argv[], char *envp[]);
 
 extern void naive_uload(PCB *pcb, const char *filename);
+extern void context_uload(PCB *pcb, char *filename, char *const argv[], char *const envp[]);
+extern void switch_boot_pcb();
 
 void do_syscall(Context *c) {
   uintptr_t arg[4];
@@ -150,6 +152,10 @@ static int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
 
 static int sys_execve(const char* pathname, char *argv[], char *envp[]) {
   if(fs_open(pathname, 0, 0) == -1) return -1;
-  naive_uload(NULL, pathname);
-  return 0;
+  
+  context_uload(current, (char *)pathname, argv, envp);
+  switch_boot_pcb();
+  yield();
+  panic("should not reach here!");
+  return -1;
 }

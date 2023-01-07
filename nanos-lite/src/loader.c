@@ -67,7 +67,7 @@ void context_kload(PCB *pcb, void(*func)(void *), void *arg) {
   printf("kload over\n");
 }
 
-void context_uload(PCB *pcb, char *filename) {
+void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   Area kstack;
   kstack.start = pcb -> stack;
   kstack.end = pcb -> stack + STACK_SIZE;
@@ -79,4 +79,42 @@ void context_uload(PCB *pcb, char *filename) {
   // user stack
   pcb -> cp -> GPRx = (uintptr_t)heap.end;
 
+  // load arguments
+  void *upf = new_page(8);
+  uintptr_t ustack_end = (uintptr_t)upf + 8 * PGSIZE;
+  uintptr_t str_start = ustack_end - STRING_AREA_SIZE;
+  uintptr_t ustack_start = ustack_end - USTACK_SIZE;
+
+  // get argc 
+  int argc = 0;
+  while(argv[argc])
+    argc ++ ;
+  
+  int envc = 0;
+  while(envp[envc])
+    envc ++ ;
+  
+  // load argc 
+  int *where_argc = (int *)ustack_start;
+  *where_argc = argc;
+
+  // load argv 
+  uintptr_t * where_argv = (uintptr_t *)(ustack_start - sizeof(uintptr_t));
+  for(int i = 0; i < argc; i++) {
+    uintptr_t where_copy = str_start + i * SZ_PER_STR;
+    *where_argv = where_copy;
+    where_argv ++;
+    strcpy((void *)where_copy, argv[i]);
+  }
+
+  // load envp 
+  uintptr_t * where_envp = (uintptr_t *)(ustack_start - argc * sizeof(uintptr_t));
+  for(int j = 0; j < envc; j++) {
+    uintptr_t where_copy = str_start + (j + argc) * SZ_PER_STR;
+    *where_envp = where_copy;
+    where_envp ++;
+    strcpy((void *)where_copy, envp[j]);
+  }
+
+  pcb -> cp -> GPRx = ustack_start;
 }

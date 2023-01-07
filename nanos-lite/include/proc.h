@@ -5,6 +5,9 @@
 #include <memory.h>
 
 #define STACK_SIZE (8 * PGSIZE)
+#define USTACK_SIZE PGSIZE
+#define STRING_AREA_SIZE 2048
+#define SZ_PER_STR 16
 
 typedef union {
   uint8_t stack[STACK_SIZE] PG_ALIGN;
