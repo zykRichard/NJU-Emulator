@@ -32,7 +32,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  
+  printf("ready to schedule\n"); 
   current -> cp = prev;
   current = &pcb[0];
 
