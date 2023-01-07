@@ -47,7 +47,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *ctx = (Context *)(kstack.end - sizeof(Context));
   ctx -> mepc = (uintptr_t)entry;
 
-  if(!arg) {
+  if(arg) {
+    printf("arg create by %p\n", arg);
     ctx -> GPR2 = (uintptr_t)arg;
   }
   return ctx;
