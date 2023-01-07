@@ -64,4 +64,5 @@ void context_kload(PCB *pcb, void(*func)(void *), void *arg) {
   kstack.end = pcb -> stack + STACK_SIZE;
   Context *ctx = kcontext(kstack, func, arg);
   pcb -> cp = ctx;
+  printf("kload over\n");
 }
