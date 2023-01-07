@@ -1,6 +1,6 @@
 #include <common.h>
 
-
+extern Context* schedule(Context *prev);
 
 // static void do_syscall(Context* c) {
 
@@ -31,7 +31,7 @@ void do_syscall(Context *c);
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
 
-    case EVENT_YIELD: printf("Yield occurs!\n"); break;
+    case EVENT_YIELD: schedule(c); break;
 
     case EVENT_SYSCALL: do_syscall(c); break;  
      
