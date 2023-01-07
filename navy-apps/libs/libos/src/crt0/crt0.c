@@ -10,7 +10,7 @@ void call_main(uintptr_t *args) {
   char *argv[argc];
   for(int i = 0; i < argc; i++)
     argv[i] = (char *)(*(argv_start + i));
-  
+  printf("That's call_main\n"); 
   char *empty[] =  {NULL };
   environ = empty;
   exit(main(argc, argv, empty));
