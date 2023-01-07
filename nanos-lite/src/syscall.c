@@ -81,8 +81,8 @@ static void sys_exit(int code) {
 
   //halt(code);
   //sys_execve("/bin/menu", NULL, NULL);
-  char *argv[2] = {"/bin/nterm", NULL};
-  context_uload(current, "/bin/nterm", argv, NULL);
+  char *argv[2] = {"/bin/exec-test", NULL};
+  context_uload(current, "/bin/exec-test", argv, NULL);
   switch_boot_pcb();
   yield();
 }
