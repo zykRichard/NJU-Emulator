@@ -3,7 +3,7 @@
 #define MAX_NR_PROC 4
 extern void naive_uload(PCB *pcb, const char *filename);
 extern void context_kload(PCB *pcb, void(*func)(void *), void *arg); 
-extern void context_uload(PCB *pcb, char *filename);
+extern void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]);
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
@@ -23,6 +23,9 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
+  char * argv[] = {"/bin/exec-test", "100", NULL};
+  char * envp[] = {NULL };
+  context_uload(&pcb[0], "/bin/exec-test", argv, envp);
   //context_kload(&pcb[0], hello_fun, (void *)'1');
   //context_kload(&pcb[1], hello_fun, (void *)'2');
   //context_uload(&pcb[0], "/bin/nterm");
@@ -30,9 +33,9 @@ void init_proc() {
   switch_boot_pcb();
   
   Log("Initializing processes...");
-  //yield(); 
+  yield(); 
   // load program here
-  naive_uload(NULL, "/bin/exec-test");
+  //naive_uload(NULL, "/bin/exec-test");
 }
 
 Context* schedule(Context *prev) {
