@@ -26,7 +26,7 @@ void init_proc() {
   char * argv[] = {"/bin/exec-test", "100", NULL};
   char * envp[] = {NULL };
   context_uload(&pcb[1], "/bin/exec-test", argv, envp);
-  //context_kload(&pcb[0], hello_fun, (void *)'1');
+  context_kload(&pcb[0], hello_fun, (void *)'1');
   //context_kload(&pcb[1], hello_fun, (void *)'2');
   //context_uload(&pcb[0], "/bin/nterm");
   //context_uload(&pcb[1], "/bin/pal");
