@@ -25,8 +25,8 @@ void hello_fun(void *arg) {
 void init_proc() {
   //context_kload(&pcb[0], hello_fun, (void *)'1');
   //context_kload(&pcb[1], hello_fun, (void *)'2');
-  context_uload(&pcb[1], "/bin/nterm");
-  context_uload(&pcb[0], "/bin/hello");
+  context_uload(&pcb[0], "/bin/nterm");
+  context_uload(&pcb[1], "/bin/hello");
   switch_boot_pcb();
   
   Log("Initializing processes...");
