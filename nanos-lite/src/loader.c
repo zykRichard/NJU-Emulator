@@ -102,7 +102,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   *where_argc = argc;
   printf("argc loading over\n");
   // load argv 
-  uintptr_t * where_argv = (uintptr_t *)(ustack_start - sizeof(uintptr_t));
+  uintptr_t * where_argv = (uintptr_t *)(ustack_start + sizeof(uintptr_t));
   for(int i = 0; i < argc; i++) {
     uintptr_t where_copy = str_start + i * SZ_PER_STR;
     *where_argv = where_copy;
@@ -111,7 +111,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   }
   printf("argv loading over\n");
   // load envp 
-  uintptr_t * where_envp = (uintptr_t *)(ustack_start - argc * sizeof(uintptr_t));
+  uintptr_t * where_envp = (uintptr_t *)(ustack_start + argc * sizeof(uintptr_t));
   for(int j = 0; j < envc; j++) {
     uintptr_t where_copy = str_start + (j + argc) * SZ_PER_STR;
     *where_envp = where_copy;
