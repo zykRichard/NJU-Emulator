@@ -84,6 +84,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   uintptr_t ustack_end = (uintptr_t)upf + 8 * PGSIZE;
   uintptr_t str_start = ustack_end - STRING_AREA_SIZE;
   uintptr_t ustack_start = ustack_end - USTACK_SIZE;
+  printf("ustack_end is %p, str_start is %p, ustack_stack is %p\n", ustack_end, str_start, ustack_start);
   printf("arguments loading over\n");
   // get argc 
   int argc = 0;
