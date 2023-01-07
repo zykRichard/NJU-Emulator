@@ -151,6 +151,7 @@ static int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
 }
 
 static int sys_execve(const char* pathname, char *argv[], char *envp[]) {
+  Log("sys_execve occurs");
   if(fs_open(pathname, 0, 0) == -1) return -1;
   
   context_uload(current, (char *)pathname, argv, envp);
