@@ -80,7 +80,7 @@ static void sys_exit(int code) {
   //Log("sys_exit occurs");
 
   //halt(code);
-  sys_execve("/bin/menu", NULL, NULL);
+  //sys_execve("/bin/menu", NULL, NULL);
 
   halt(code);
 }
