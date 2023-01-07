@@ -5,11 +5,11 @@ extern void naive_uload(PCB *pcb, const char *filename);
 extern void context_kload(PCB *pcb, void(*func)(void *), void *arg); 
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
-//static PCB pcb_boot = {};
+static PCB pcb_boot = {};
 PCB *current = NULL;
 
 void switch_boot_pcb() {
-  current = &pcb[0];
+  current = &pcb_boot;
 }
 
 void hello_fun(void *arg) {
@@ -22,11 +22,12 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, NULL);
+  context_kload(&pcb[0], hello_fun, (void *)('1'));
+  context_kload(&pcb[1], hello_fun, (void *)('2'));
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  
+  yield(); 
   // load program here
   naive_uload(NULL, "/bin/pal");
 }
@@ -34,7 +35,7 @@ void init_proc() {
 Context* schedule(Context *prev) {
   printf("ready to schedule\n"); 
   current -> cp = prev;
-  current = &pcb[0];
+  current = (current == &pcb[0]) ? &pcb[1] : &pcb[0];
 
   return current -> cp;
 }
