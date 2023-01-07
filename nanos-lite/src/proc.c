@@ -27,9 +27,9 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  yield(); 
+  //yield(); 
   // load program here
-  naive_uload(NULL, "/bin/pal");
+  //naive_uload(NULL, "/bin/pal");
 }
 
 Context* schedule(Context *prev) {
