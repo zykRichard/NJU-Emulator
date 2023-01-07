@@ -84,20 +84,22 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   uintptr_t ustack_end = (uintptr_t)upf + 8 * PGSIZE;
   uintptr_t str_start = ustack_end - STRING_AREA_SIZE;
   uintptr_t ustack_start = ustack_end - USTACK_SIZE;
-
+  printf("arguments loading over\n");
   // get argc 
   int argc = 0;
   while(argv[argc])
     argc ++ ;
-  
+  printf("argc loading over\n");
+
   int envc = 0;
   while(envp[envc])
     envc ++ ;
-  
+  printf("envc loading over\n");
+
   // load argc 
   int *where_argc = (int *)ustack_start;
   *where_argc = argc;
-
+  printf("argc loading over\n");
   // load argv 
   uintptr_t * where_argv = (uintptr_t *)(ustack_start - sizeof(uintptr_t));
   for(int i = 0; i < argc; i++) {
@@ -106,7 +108,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
     where_argv ++;
     strcpy((void *)where_copy, argv[i]);
   }
-
+  printf("argv loading over\n");
   // load envp 
   uintptr_t * where_envp = (uintptr_t *)(ustack_start - argc * sizeof(uintptr_t));
   for(int j = 0; j < envc; j++) {
@@ -115,6 +117,6 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
     where_envp ++;
     strcpy((void *)where_copy, envp[j]);
   }
-
+  printf("envp loading over\n");
   pcb -> cp -> GPRx = ustack_start;
 }
