@@ -31,8 +31,8 @@ void do_syscall(Context *c) {
       case SYS_exit:
         Log("arg0 is %p", arg[0]);
         Log("arg1 is %p", arg[1]);
-        Log("arg2 is %p", arg[2]);
-        Log("arg3 is %p", arg[3]);
+        Log("arg2 is %s", arg[2]);
+        Log("arg3 is %s", arg[3]);
         sys_exit(arg[1]);
         break;
 
