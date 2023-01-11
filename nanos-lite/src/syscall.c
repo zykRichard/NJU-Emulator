@@ -78,6 +78,7 @@ void do_syscall(Context *c) {
 
 static void sys_exit(int code) { 
   Log("sys_exit occurs");
+  Log("exit code is %p", code);
 
   //halt(code);
   //sys_execve("/bin/menu", NULL, NULL);
