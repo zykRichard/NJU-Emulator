@@ -69,6 +69,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         if((uintptr_t)va_off == 0) {
           // new page alloc:
           pa = new_page(1);
+          Log("pa is %p", pa);
           map(&pcb -> as, align_va_begin, pa, 0);
         }
         read_sz = (align_va_end - va <= bss_sz - load_sz) ? 
