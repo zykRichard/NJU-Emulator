@@ -46,6 +46,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
         void *va_off = (void *)((uintptr_t)va & (0xfff));
         pa = new_page(1);
+        Log("pa is %p", pa);
         read_sz = (align_va_end - va <= (PROheader.p_filesz - load_sz)) ? 
                                     (align_va_end - va) : (PROheader.p_filesz - load_sz);
         map(&pcb -> as, align_va_begin, pa, 0);
