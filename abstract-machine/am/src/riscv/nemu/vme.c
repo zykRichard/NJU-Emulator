@@ -82,7 +82,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PDE[vpn1] = updir;
   }
   printf("PTE alloc OK\n");
-  PTE* PTEdir = (PTE*)entry;
+  PTE* PTEdir = (PTE*)(PDE[vpn1]);
   PTEdir[vpn0] = (((uintptr_t)pa >> 12) << 12) | 0x1;
   
 }
