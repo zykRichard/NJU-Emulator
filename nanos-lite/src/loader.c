@@ -20,32 +20,64 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   int fd = fs_open(filename, 0, 0); 
   size_t base = file_load(fd);
-  //Log("base is %d", base);
   // read ELF header:
   ramdisk_read((void *)(&ELFheader), base, sizeof(Elf_Ehdr));
-  //char *p = (char *)(&ELFheader);
-  //printf("first 4 bytes:%x %x %x %x", p[0], p[1], p[2], p[3]);
-  //printf("magic is %x\n", *(uint32_t *)(ELFheader.e_ident)); 
   // Judge:
   assert(*(uint32_t*)(ELFheader.e_ident) == 0x464c457f);
 
   uintptr_t ret_addr = ELFheader.e_entry;
-  //printf("ret addr is %p\n", ret_addr);
   size_t pro_off = ELFheader.e_phoff;
-  //printf("Segment offset is %x\n", pro_off);
   size_t pro_num = ELFheader.e_phnum;
-  //printf("Segment number is %x\n", pro_num);
   size_t pro_size = ELFheader.e_phentsize;
-  //printf("Segment entry size is %x\n", pro_size);
 
   // read Segment headers and LOAD:
   for(int i = 0; i < pro_num; i++){
 
     ramdisk_read((void *)(&PROheader), base + pro_off + i * pro_size, pro_size);
     if(PROheader.p_type == PT_LOAD){
-      //printf("In proheader %d, offset is %d, size is %d\n", i, PROheader.p_offset, PROheader.p_memsz);
-      ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_filesz);
-      memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
+      // load by page :
+      fs_lseek(fd, PROheader.p_offset, SEEK_SET);
+      void *va = (void *)PROheader.p_vaddr;
+      void *pa = NULL;
+      size_t load_sz = 0, read_sz = 0;
+
+      while(load_sz < PROheader.p_filesz){
+        void *align_va_end = (void *)(((uintptr_t)va & (~0xfff)) + PGSIZE);
+        void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
+        void *va_off = (void *)((uintptr_t)va & (0xfff));
+        pa = new_page(1);
+        read_sz = (align_va_end - va <= (PROheader.p_filesz - load_sz)) ? 
+                                    (align_va_end - va) : (PROheader.p_filesz - load_sz);
+        map(&pcb -> as, align_va_begin, pa, 0);
+
+        // load into mm:
+        fs_read(fd, (void *)((uintptr_t)va_off + (uintptr_t)pa), read_sz);
+        load_sz += read_sz;
+        va = va + read_sz; 
+
+      }
+
+      size_t bss_sz = PROheader.p_memsz - PROheader.p_filesz;
+      load_sz = 0, read_sz = 0;
+      va = (void *)PROheader.p_vaddr + PROheader.p_filesz;
+
+      while(load_sz < bss_sz){
+        void *align_va_end = (void *)(((uintptr_t)va & (~0xfff)) + PGSIZE);
+        void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
+        void *va_off = (void *)((uintptr_t)va & (0xfff));
+        if((uintptr_t)va_off == 0) {
+          // new page alloc:
+          pa = new_page(1);
+          map(&pcb -> as, align_va_begin, pa, 0);
+        }
+        read_sz = (align_va_end - va <= bss_sz - load_sz) ? 
+                                    (align_va_end - va) : (bss_sz - load_sz);
+        memset(va_off, 0, read_sz);
+        load_sz += read_sz;
+        va = va + read_sz;
+      }
+      // ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_filesz);
+      // memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
     }    
   }  
 
