@@ -82,7 +82,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       // memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
     }    
   }  
-
+  Log("loading  over");
   return ret_addr;
 }
 
