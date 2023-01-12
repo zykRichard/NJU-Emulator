@@ -8,8 +8,10 @@ void call_main(uintptr_t *args) {
   int argc = *args;
   uintptr_t *argv_start = args + 1;
   char *argv[argc];
-  for(int i = 0; i < argc; i++)
+  for(int i = 0; i < argc; i++){
     argv[i] = (char *)(*(argv_start + i));
+    printf("argc %d : %s", i, argv[i]);
+  }
   //printf("That's call_main\n");
   char *envp[] = {NULL};
   // char **envp = (char **)args + 1 + argc; 
