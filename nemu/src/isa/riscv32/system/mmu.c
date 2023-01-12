@@ -23,8 +23,8 @@
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
   int mode = cpu.satp.sig.MODE;
   switch(mode) {
-    case Bare : Log("mmu direct");return MMU_DIRECT;
-    case Sv32 : Log("mmu translate");return MMU_TRANSLATE;
+    case Bare : return MMU_DIRECT;
+    case Sv32 : return MMU_TRANSLATE;
     default : panic("mode error");return MMU_FAIL;
   }
   return -1;
