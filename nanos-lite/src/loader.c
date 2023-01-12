@@ -71,9 +71,10 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   Area kstack;
   kstack.start = pcb -> stack;
   kstack.end = pcb -> stack + STACK_SIZE;
+  protect(&(pcb -> as));
   // kernel stack
   uintptr_t entry = loader(pcb, filename);
-  Context *ctx = ucontext(NULL, kstack, (void *)entry);
+  Context *ctx = ucontext(&(pcb -> as), kstack, (void *)entry);
 
   pcb -> cp = ctx;
   // user stack
