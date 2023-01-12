@@ -19,9 +19,10 @@
 #include <cpu/decode.h>
 
 extern word_t isa_raise_intr(word_t NO, vaddr_t epc);
-
+static int* csr_reg_chosen(int id);
 #define R(i) gpr(i)
-#define CS_R(i) csr(i) 
+#define csr(i) csr_reg_chosen(i)
+#define CS_R(i) *csr(i) 
 #define Mr vaddr_read
 #define Mw vaddr_write
 
@@ -37,6 +38,33 @@ enum {
 #define src2I(i) do { *src2 = i; } while (0)
 #define destI(i) do { *dest = i; } while (0)
 #define csr_code(i) do{ *src2 = i; } while (0)
+
+static int * csr_reg_chosen(int id){
+  switch (id)
+  {
+  case 0x300:
+    return &cpu.mstatus.val;
+    break;
+  
+  case 0x305:
+    return &cpu.mtvec.val;
+    break;
+
+  case 0x341:
+    return &cpu.mepc;
+    break;
+  
+  case 0x342:
+    return &cpu.mcause.val;
+    break;
+
+  case 0x180:
+    return &cpu.satp.val;
+  default:
+    panic("NO SUCH CSR !");
+    break;
+  }
+}
 
 /*
 R I S B U J
@@ -139,7 +167,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 111 ????? 11100 11", csrrci , CSRI, R(dest) = CS_R(src2); CS_R(src2) = (~ src1) & CS_R(src2));
   
   /***************************SYSTEM*******************************************/
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s -> dnpc = cpu.csregs[2]);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s -> dnpc = cpu.mepc);
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s -> dnpc = isa_raise_intr(gpr(17), cpu.pc + 4));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
