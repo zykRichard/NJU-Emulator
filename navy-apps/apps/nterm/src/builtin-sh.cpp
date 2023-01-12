@@ -30,15 +30,15 @@ static void sh_handle_cmd(const char *cmd) {
   // eliminate '\n':
   cmd_buf[strlen(cmd) - 1] = '\0';
 
-  int argc = -1;
+  int argc = 0;
   char *argv[MAX_ARG] = {};
 
   char *token;
   token = strtok(cmd_buf, split);
   while(token != NULL) {
-    if(argc == -1){
+    if(argc == 0){
       strcpy(fname, token);
-      argc = 0;
+      argv[argc ++] = token;
       token = strtok(NULL, split);
     }
     else {
