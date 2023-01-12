@@ -77,9 +77,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         memset(va_off, 0, read_sz);
         load_sz += read_sz;
         va = va + read_sz;
+        
       }
       // ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_filesz);
       // memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
+      Log("one segment loading over");
     }    
   }  
   Log("loading  over");
