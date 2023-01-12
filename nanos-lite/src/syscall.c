@@ -81,14 +81,14 @@ static void sys_exit(int code) {
   Log("sys_exit occurs");
   
 
-  //halt(code);
+  halt(code);
   //sys_execve("/bin/menu", NULL, NULL);
-  char *argv[2] = {"/bin/exec-test", NULL};
-  char *envp[1] = {NULL};
-  sys_execve("/bin/exec-test", argv, envp);
+  //char *argv[2] = {"/bin/exec-test", NULL};
+  //char *envp[1] = {NULL};
+  //sys_execve("/bin/exec-test", argv, envp);
   //context_uload(current, "/bin/exec-test", argv, NULL);
-  switch_boot_pcb();
-  yield();
+  //switch_boot_pcb();
+  //yield();
 }
 
 static void sys_yield() { 
