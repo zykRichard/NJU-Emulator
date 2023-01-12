@@ -105,6 +105,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   kstack.end = pcb -> stack + STACK_SIZE;
   protect(&(pcb -> as));
   // kernel stack
+  Log("Let's load program");
   uintptr_t entry = loader(pcb, filename);
   Context *ctx = ucontext(&(pcb -> as), kstack, (void *)entry);
 
