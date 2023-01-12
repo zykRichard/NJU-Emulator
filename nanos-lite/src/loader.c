@@ -29,7 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   size_t pro_off = ELFheader.e_phoff;
   size_t pro_num = ELFheader.e_phnum;
   size_t pro_size = ELFheader.e_phentsize;
-
+  Log("elf header reading over");
   // read Segment headers and LOAD:
   for(int i = 0; i < pro_num; i++){
 
