@@ -12,7 +12,10 @@ void call_main(uintptr_t *args) {
     argv[i] = (char *)(*(argv_start + i));
   printf("That's call_main\n");
   char **envp = (char **)args + 1 + argc; 
-  
+  for(int j = 0; ;j++){
+    if(envp[j] != NULL)
+      printf("envp %d : %s\n", j, envp[j]);
+  } 
   environ = envp;
   exit(main(argc, argv, envp));
   assert(0);
