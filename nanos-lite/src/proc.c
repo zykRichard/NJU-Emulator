@@ -23,10 +23,12 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  char * argv[] = {"/bin/nterm", NULL};
-  char * envp[] = {NULL };
-  context_uload(&pcb[1], "/bin/nterm", argv, envp);
-  context_kload(&pcb[0], hello_fun, (void *)'1');
+  char * argv1[] = {"/bin/nterm", NULL};
+  char * envp1[] = {NULL};
+  char * argv0[] = {"/bin/pal", "--skip", NULL};
+  char * envp0[] = {NULL};
+  context_uload(&pcb[1], "/bin/nterm", argv1, envp1);
+  context_uload(&pcb[0], "/bin/pal", argv0, envp0);
   //context_kload(&pcb[1], hello_fun, (void *)'2');
   //context_uload(&pcb[0], "/bin/nterm");
   //context_uload(&pcb[1], "/bin/pal");
