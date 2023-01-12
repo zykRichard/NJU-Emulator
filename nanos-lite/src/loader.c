@@ -57,7 +57,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         va = va + read_sz; 
 
       }
-
+      Log("filesz part loading over");
       size_t bss_sz = PROheader.p_memsz - PROheader.p_filesz;
       load_sz = 0, read_sz = 0;
       va = (void *)PROheader.p_vaddr + PROheader.p_filesz;
