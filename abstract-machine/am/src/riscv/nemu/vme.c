@@ -67,6 +67,24 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+
+  uint32_t vpn1 = ((uintptr_t) va) >> 22;
+  uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
+
+  PTE* PDE = as -> ptr;
+
+  assert(PDE);
+  PTE entry = PDE[vpn1];
+  
+  // valid bit detection:
+  if((entry & 0x1) == 0) {
+    PTE updir = (PTE)(pgalloc_usr(PGSIZE)) | 0x1;
+    PDE[vpn1] = updir;
+  }
+
+  PTE* PTEdir = (PTE*)entry;
+  PTEdir[vpn0] = (((uintptr_t)pa >> 12) << 12) | 0x1;
+  
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
