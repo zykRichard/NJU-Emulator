@@ -67,7 +67,7 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("map begin\n");
+  //printf("map begin\n");
   uint32_t vpn1 = ((uintptr_t) va) >> 22;
   uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
 
@@ -81,7 +81,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PTE updir = (PTE)(pgalloc_usr(PGSIZE)) | 0x1;
     PDE[vpn1] = updir;
   }
-  printf("PTE alloc OK\n");
+  //printf("PTE alloc OK\n");
   PTE* PTEdir = (PTE*)(PDE[vpn1]);
   PTEdir[vpn0] = (((uintptr_t)pa >> 12) << 12) | 0x1;
   
