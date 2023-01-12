@@ -17,6 +17,16 @@
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
 
+int isa_mmu_check(vaddr_t vaddr, int len, int type) {
+  int mode = cpu.satp.sig.MODE;
+  switch(mode) {
+    case Bare : return MMU_DIRECT;
+    case Sv32 : return MMU_TRANSLATE;
+    default : return MMU_FAIL;
+  }
+  return -1;
+}
+
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   return MEM_RET_FAIL;
 }
