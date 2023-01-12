@@ -61,7 +61,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       size_t bss_sz = PROheader.p_memsz - PROheader.p_filesz;
       load_sz = 0, read_sz = 0;
       va = (void *)PROheader.p_vaddr + PROheader.p_filesz;
-
+      Log("va is %p", va);
       while(load_sz < bss_sz){
         void *align_va_end = (void *)(((uintptr_t)va & (~0xfff)) + PGSIZE);
         void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
