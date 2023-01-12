@@ -74,7 +74,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         }
         read_sz = (align_va_end - va <= bss_sz - load_sz) ? 
                                     (align_va_end - va) : (bss_sz - load_sz);
-        memset(va_off, 0, read_sz);
+        memset((void *)((uintptr_t)va_off + (uintptr_t)pa), 0, read_sz);
         load_sz += read_sz;
         va = va + read_sz;
         
