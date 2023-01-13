@@ -69,7 +69,7 @@ void __am_switch(Context *c) {
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   //printf("map begin\n");
-  //printf("map %p to %p\n", va, pa);
+  printf("map %p to %p\n", va, pa);
   
   uint32_t vpn1 = ((uintptr_t) va) >> 22;
   uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
