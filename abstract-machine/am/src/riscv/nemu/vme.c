@@ -70,6 +70,9 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   //printf("map begin\n");
   //printf("map %p to %p\n", va, pa);
+  int flag = 0;
+  if((uintptr_t) va == 0x80001b80) flag = 1;
+  else flag = 0;
   uint32_t vpn1 = ((uintptr_t) va) >> 22;
   uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
 
@@ -86,7 +89,10 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   //printf("PTE alloc OK\n");
   PTE* PTEdir = (PTE*)(PDE[vpn1]);
   PTEdir[vpn0] = (((uintptr_t)pa >> 12) << 12) | 0x1;
-  
+  if(flag){
+  printf("vpn 1 : %p, vpn 0 : %p\n", vpn1, vpn0);
+  printf("PTE table base at %p\n", PDE[vpn1]);
+  }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
