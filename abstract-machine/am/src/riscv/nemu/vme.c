@@ -73,7 +73,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
 
   PTE* PDE = as -> ptr;
-
+  printf("base is %p\n", as -> ptr);
   assert(PDE);
   PTE entry = PDE[vpn1];
   
