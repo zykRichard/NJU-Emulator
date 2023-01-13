@@ -71,7 +71,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   //printf("map begin\n");
   //printf("map %p to %p\n", va, pa);
   int flag = 0;
-  if((uintptr_t) va == 0x80001b80) flag = 1;
+  if((uintptr_t) va == 0x80001000) flag = 1;
   else flag = 0;
   uint32_t vpn1 = ((uintptr_t) va) >> 22;
   uint32_t vpn0 = (((uintptr_t) va) >> 12) & 0x3ff;
