@@ -119,6 +119,11 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
 
   // load arguments
   void *upf = new_page(8);
+  // stack mapping:
+  void * va = (void *)((char *)pcb -> as.area.end - 8 * PGSIZE);
+  for(int i = 0; i < 8; i++){
+    map(&pcb -> as, (void *)((char *)va + i * PGSIZE), (void *)((char *)upf + i * PGSIZE), 0);
+  }
   uintptr_t ustack_end = (uintptr_t)upf + 8 * PGSIZE;
   uintptr_t str_start = ustack_end - STRING_AREA_SIZE;
   uintptr_t ustack_start = ustack_end - USTACK_SIZE;
