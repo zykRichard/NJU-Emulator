@@ -36,6 +36,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   word_t vpn1 = vaddr >> 22;
   word_t vpn0 = (vaddr >> 12) & 0x3ff;
   word_t vpn_off = vaddr & 0xfff;
+  Log("reading addr %x", vaddr);
 
   // PDE : satp.PNN * PGSIZE + vpn1 * PTESZ
   paddr_t PDE_addr = cpu.satp.sig.PPN * PAGESIZE + vpn1 * PTESIZE;
