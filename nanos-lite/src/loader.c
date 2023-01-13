@@ -79,7 +79,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         memset((void *)((uintptr_t)va_off + (uintptr_t)pa), 0, read_sz);
         load_sz += read_sz;
         va = va + read_sz;
-        
+        Log("bss loading over"); 
       }
       // ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_filesz);
       // memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
