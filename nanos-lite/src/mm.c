@@ -44,6 +44,7 @@ int mm_brk(uintptr_t brk) {
         va = (void *)((char *)va + PGSIZE);
       }
     }
+    Log("brk from %p to %p", current -> max_brk, brk);
     current -> max_brk = brk;
   }
   return 0;
