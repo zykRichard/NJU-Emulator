@@ -71,7 +71,7 @@ int fs_open(const char* pathname, int flag, int modes) {
 
 
 size_t fs_read(int fd, void *buf, size_t len){
-  Log("read to addr %p", buf);
+  //Log("read to addr %p", buf);
   if(fd == FD_EVENTS || fd == FD_DISPINFO) return file_table[fd].read(buf, 0, len);
   size_t file_off = file_table[fd].file_offset;
   //Log("reading %d bytes, offset is %d", len, file_off);
