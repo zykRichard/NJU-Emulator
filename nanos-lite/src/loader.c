@@ -49,6 +49,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         Log("pa is %p", pa);
         read_sz = (align_va_end - va <= (PROheader.p_filesz - load_sz)) ? 
                                     (align_va_end - va) : (PROheader.p_filesz - load_sz);
+        Log("now mapping %p to %p", align_va_begin, pa);
         map(&pcb -> as, align_va_begin, pa, 0);
 
         // load into mm:
@@ -70,6 +71,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
           // new page alloc:
           pa = new_page(1);
           Log("pa is %p", pa);
+          Log("now mapping %p to %p", align_va_end, pa);
           map(&pcb -> as, align_va_begin, pa, 0);
         }
         read_sz = (align_va_end - va <= bss_sz - load_sz) ? 
