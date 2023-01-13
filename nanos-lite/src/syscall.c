@@ -92,7 +92,7 @@ static void sys_exit(int code) {
 }
 
 static void sys_yield() { 
-  //Log("sys_yield occurs");
+  Log("sys_yield occurs");
 
   yield(); 
 }
