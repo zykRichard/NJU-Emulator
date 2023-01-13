@@ -18,6 +18,7 @@ static int sys_execve(const char* pathname, char *argv[], char *envp[]);
 extern void naive_uload(PCB *pcb, const char *filename);
 extern void context_uload(PCB *pcb, char *filename, char *const argv[], char *const envp[]);
 extern void switch_boot_pcb();
+extern int mm_brk(uintptr_t brk);
 
 void do_syscall(Context *c) {
   uintptr_t arg[4];
@@ -42,7 +43,7 @@ void do_syscall(Context *c) {
         break;
 
       case SYS_brk:
-        c->GPRx = sys_brk();
+        c->GPRx = sys_brk((uintptr_t)arg[1], (intptr_t)arg[2]);
         break;
 
       case SYS_open:
@@ -110,10 +111,15 @@ static int sys_write(int fd, void *buf, size_t count) {
   return count;
 }
 
-static int sys_brk() {
+static int flag = 1;
+static int sys_brk(uintptr_t brk, intptr_t increment) {
   //Log("sys_brk occurs");
-
-  return 0;
+  if(flag){
+    flag = 0;
+    mm_brk(brk - increment);
+  }
+  int ret = mm_brk(brk);
+  return ret;
 }
 
 static int sys_open(char* pathname, int flags, int modes) {

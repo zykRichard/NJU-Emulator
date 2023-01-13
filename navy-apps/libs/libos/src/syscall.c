@@ -69,12 +69,14 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
-  int ret = _syscall_(SYS_brk, 0, 0, 0);
-  if(ret == 0){
     intptr_t old_addr = end_addr;
-    end_addr = old_addr + increment;
-    return (void *)(old_addr);
-  } 
+    intptr_t new_addr = end_addr + increment;
+
+    if(_syscall_(SYS_brk, new_addr, increment, 0) == 0){
+      end_addr = new_addr;
+      return (void *)old_addr;
+    }
+ 
   return (void *)(-1);
 }
 
