@@ -41,9 +41,10 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t PDE_addr = cpu.satp.sig.PPN * PAGESIZE + vpn1 * PTESIZE;
   //printf("PDE address is %x\n", PDE_addr);
   word_t PDE = paddr_read(PDE_addr, 4);
-  if(!(PDE & 0x1))
-    panic("PDE invalid when reading addr %x", vaddr);
-
+  if(!(PDE & 0x1)){
+    panic("PDE invalid when reading addr %x",vaddr);
+    
+  }
   // PTE : PDE.PPN * PGSIZE + vpn0 * PTESZ
   paddr_t PTE_addr = (PDE >> 12) * PAGESIZE + vpn0 * PTESIZE;
   word_t PTE = paddr_read(PTE_addr, 4);
