@@ -47,7 +47,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t PTE_addr = (PDE >> 12) * PAGESIZE + vpn0 * PTESIZE;
   word_t PTE = paddr_read(PTE_addr, 4);
   if(!(PTE & 0x1))
-    panic("PTE invalid when reading addr %x, PTE is %x, PDE is %x", vaddr, PTE, PDE);
+    panic("PTE invalid when reading addr %x, PTE is %x, PDE is %x, vpn0: %x, vpn1 : %x, vpn_off : %x", vaddr, PTE, PDE, vpn0, vpn1, vpn_off);
   
   // paddr : PTE.PPN * PGSIZE + vpn_off
   paddr_t ret = (PTE >> 12) * PAGESIZE + vpn_off;
