@@ -173,6 +173,6 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   uintptr_t vas = (uintptr_t)(pcb -> as.area.end) - USTACK_SIZE;
   //pcb -> cp -> GPRs = (uintptr_t)(ustack_start);
   //pcb -> cp -> GPRx = (uintptr_t)(ustack_start);
-  //pcb -> cp -> GPRs = vas;
+  pcb -> cp -> GPRs = vas;
   pcb -> cp -> GPRx = vas;
 }
