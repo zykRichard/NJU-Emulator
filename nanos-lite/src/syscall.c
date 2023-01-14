@@ -81,7 +81,11 @@ void do_syscall(Context *c) {
 static void sys_exit(int code) { 
   Log("sys_exit occurs");
   
-
+  char *argv[2] = {"/bin/menu", NULL};
+  char *envp[] = {NULL};
+  sys_execve("/bin/menu", argv, envp);
+  switch_boot_pcb();
+  yield();
   halt(code);
   //sys_execve("/bin/menu", NULL, NULL);
   //char *argv[2] = {"/bin/exec-test", NULL};
