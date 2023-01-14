@@ -170,5 +170,6 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   //printf("envp loading over\n");
   }
   Log("ustack_stack is %p", ustack_start);
-  pcb -> cp -> GPRs = ustack_end;
+  pcb -> cp -> GPRs = (uintptr_t)(pcb -> as.area.end);
+  pcb -> cp -> GPRx = (uintptr_t)(pcb -> as.area.end);
 }
