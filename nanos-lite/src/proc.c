@@ -31,7 +31,7 @@ void init_proc() {
 
   char * argv2[] = {"/bin/nterm", NULL};
   char * envp2[] = {NULL};
-  context_uload(&pcb[2], "/bin/nslider", argv2, envp2);
+  context_uload(&pcb[2], "/bin/nterm", argv2, envp2);
   //char * argv0[] = {"/bin/pal", "--skip", NULL};
   //char * envp0[] = {NULL};
   //context_uload(&pcb[1], "/bin/nterm", argv1, envp1);
