@@ -41,7 +41,8 @@ __am_asm_trap:
   csrr sp, mscratch        // else restore
   
 
-save_context: 
+save_context:
+  STORE sp, OFFSET_SCRATCH(sp)
   addi sp, sp, -CONTEXT_SIZE
 
   MAP(REGS, PUSH)
