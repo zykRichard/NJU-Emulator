@@ -11,7 +11,7 @@ extern void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
-  printf("go into irq_handler\n");
+  //printf("go into irq_handler\n");
   if (user_handler) {
     Event ev = {0};
     // printf("mcause is %p\n", c -> mcause);
@@ -36,7 +36,7 @@ Context* __am_irq_handle(Context *c) {
     assert(c != NULL);
   }
   __am_switch(c);
-  printf("return from irq_handler\n");
+  //printf("return from irq_handler\n");
   return c;
 }
 
