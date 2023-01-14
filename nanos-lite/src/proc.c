@@ -32,9 +32,9 @@ void init_proc() {
   //context_kload(&pcb[1], hello_fun, (void *)'2');
   //context_uload(&pcb[0], "/bin/nterm");
   //context_uload(&pcb[1], "/bin/pal");
-  char *argv[] = {"/bin/bird", NULL};
+  char *argv[] = {"/bin/pal", "--skip", NULL};
   char *envp[] = {NULL};
-  context_uload(&pcb[0], "/bin/bird", argv, envp);
+  context_uload(&pcb[0], "/bin/pal", argv, envp);
   switch_boot_pcb();
   
   Log("Initializing processes...");

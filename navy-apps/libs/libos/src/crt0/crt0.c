@@ -5,13 +5,13 @@
 int main(int argc, char *argv[], char *envp[]);
 extern char **environ;
 void call_main(uintptr_t *args) {
-  printf("go into call_main");
+  printf("go into call_main\n");
   int argc = *args;
   uintptr_t *argv_start = args + 1;
   char *argv[argc];
   for(int i = 0; i < argc; i++){
     argv[i] = (char *)(*(argv_start + i));
-    printf("argc %d : %s", i, argv[i]);
+    printf("argc %d : %s\n", i, argv[i]);
   }
   //printf("That's call_main\n");
   char *envp[] = {NULL};
