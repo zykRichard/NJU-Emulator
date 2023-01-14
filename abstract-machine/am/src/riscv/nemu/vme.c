@@ -98,6 +98,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   ctx -> mstatus |= 0x80;
   ctx -> pdir = as -> ptr;
   ctx -> mscratch = (uintptr_t)(kstack.end);
-  asm volatile("csrw mscratch, %0" : : "r"((uintptr_t)(0)));
+  //asm volatile("csrw mscratch, %0" : : "r"((uintptr_t)(0)));
   return ctx;
 }
