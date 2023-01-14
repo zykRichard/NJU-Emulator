@@ -58,7 +58,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   ctx -> pdir = NULL;
   ctx -> mstatus |= 0x80;
   ctx -> mscratch = 0; // kernel
-  ctx -> GPRs = (uintptr_t)(kstack.end);
+  //ctx -> GPRs = (uintptr_t)(kstack.end);
   asm volatile("csrw mscratch, %0" : : "r"((uintptr_t)(0)));
   if(arg) {
     //printf("arg create by %p\n", arg);
