@@ -29,7 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   size_t pro_off = ELFheader.e_phoff;
   size_t pro_num = ELFheader.e_phnum;
   size_t pro_size = ELFheader.e_phentsize;
-  Log("elf header reading over");
+  //Log("elf header reading over");
   // read Segment headers and LOAD:
   for(int i = 0; i < pro_num; i++){
 
@@ -46,10 +46,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
         void *va_off = (void *)((uintptr_t)va & (0xfff));
         pa = new_page(1);
-        Log("pa is %p", pa);
+        //Log("pa is %p", pa);
         read_sz = (align_va_end - va <= (PROheader.p_filesz - load_sz)) ? 
                                     (align_va_end - va) : (PROheader.p_filesz - load_sz);
-        Log("now mapping %p to %p", align_va_begin, pa);
+        //Log("now mapping %p to %p", align_va_begin, pa);
         map(&pcb -> as, align_va_begin, pa, 0);
 
         // load into mm:
@@ -58,11 +58,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         va = va + read_sz; 
 
       }
-      Log("filesz part loading over");
+      //Log("filesz part loading over");
       size_t bss_sz = PROheader.p_memsz - PROheader.p_filesz;
       load_sz = 0, read_sz = 0;
       va = (void *)PROheader.p_vaddr + PROheader.p_filesz;
-      Log("va is %p", va);
+      //Log("va is %p", va);
       while(load_sz < bss_sz){
         void *align_va_end = (void *)(((uintptr_t)va & (~0xfff)) + PGSIZE);
         void *align_va_begin = (void *)((uintptr_t)va & (~0xfff));
@@ -70,8 +70,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         if((uintptr_t)va_off == 0) {
           // new page alloc:
           pa = new_page(1);
-          Log("pa is %p", pa);
-          Log("now mapping %p to %p", align_va_end, pa);
+          //Log("pa is %p", pa);
+          //Log("now mapping %p to %p", align_va_end, pa);
           map(&pcb -> as, align_va_begin, pa, 0);
         }
         read_sz = (align_va_end - va <= bss_sz - load_sz) ? 
@@ -79,14 +79,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         memset((void *)((uintptr_t)va_off + (uintptr_t)pa), 0, read_sz);
         load_sz += read_sz;
         va = va + read_sz;
-        Log("bss loading over"); 
+        //Log("bss loading over"); 
       }
       // ramdisk_read((void *)(PROheader.p_vaddr), base + PROheader.p_offset, PROheader.p_filesz);
       // memset((void*)(PROheader.p_vaddr + PROheader.p_filesz), 0, PROheader.p_memsz - PROheader.p_filesz);
-      Log("one segment loading over");
+      //Log("one segment loading over");
     }    
   }  
-  Log("loading  over");
+  //Log("loading  over");
   return ret_addr;
 }
 
@@ -102,7 +102,7 @@ void context_kload(PCB *pcb, void(*func)(void *), void *arg) {
   kstack.end = pcb -> stack + STACK_SIZE;
   Context *ctx = kcontext(kstack, func, arg);
   pcb -> cp = ctx;
-  printf("kload over\n");
+  //printf("kload over\n");
 }
 
 void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
@@ -111,7 +111,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   kstack.end = pcb -> stack + STACK_SIZE;
   protect(&(pcb -> as));
   // kernel stack
-  Log("Let's load program");
+  //Log("Let's load program");
   uintptr_t entry = loader(pcb, filename);
   Context *ctx = ucontext(&(pcb -> as), kstack, (void *)entry);
 
@@ -129,26 +129,26 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   uintptr_t ustack_end = (uintptr_t)upf + 8 * PGSIZE;
   uintptr_t str_start = ustack_end - STRING_AREA_SIZE;
   uintptr_t ustack_start = ustack_end - USTACK_SIZE;
-  printf("ustack_end is %p, str_start is %p, ustack_stack is %p\n", ustack_end, str_start, ustack_start);
-  printf("arguments loading over\n");
+  //printf("ustack_end is %p, str_start is %p, ustack_stack is %p\n", ustack_end, str_start, ustack_start);
+  //printf("arguments loading over\n");
   // get argc
   int argc = 0;
   int envc = 0;
   if(argv){ 
   while(argv[argc])
     argc ++ ;
-  printf("argc %d loading over\n", argc);
+  //printf("argc %d loading over\n", argc);
   }
 
   if(envp){
   while(envp[envc])
     envc ++ ;
-  printf("envc loading over\n");
+  //printf("envc loading over\n");
   }
   // load argc 
   int *where_argc = (int *)ustack_start;
   *where_argc = argc;
-  printf("argc loading over\n");
+  //printf("argc loading over\n");
   // load argv 
   uintptr_t * where_argv = (uintptr_t *)(ustack_start + sizeof(uintptr_t));
   for(int i = 0; i < argc; i++) {
@@ -157,7 +157,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
     where_argv ++;
     strcpy((void *)where_copy, argv[i]);
   }
-  printf("argv loading over\n");
+  //printf("argv loading over\n");
   // load envp 
   if(envp){
   uintptr_t * where_envp = (uintptr_t *)(ustack_start + argc * sizeof(uintptr_t));
@@ -167,7 +167,7 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
     where_envp ++;
     strcpy((void *)where_copy, envp[j]);
   }
-  printf("envp loading over\n");
+  //printf("envp loading over\n");
   }
   pcb -> cp -> GPRx = ustack_start;
 }
