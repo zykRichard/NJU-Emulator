@@ -69,9 +69,9 @@ save_context:
   csrr t1, mscratch
   xor t0, t0, t1
   bnez t0, NP_U
-  # xor t2, t0, t0
-  # addi t2, t2, KERNEL
-  # STORE t2, OFFSET_NP(sp)
+  xor t2, t0, t0
+  addi t2, t2, KERNEL
+  STORE t2, OFFSET_NP(sp)
   j HANDLER
 
 NP_U:
