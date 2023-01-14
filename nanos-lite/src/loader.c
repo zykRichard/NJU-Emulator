@@ -170,9 +170,9 @@ void context_uload(PCB *pcb, char *filename, char * argv[], char * envp[]) {
   //printf("envp loading over\n");
   }
   Log("ustack_stack is %p", ustack_start);
-  uintptr_t vas = (uintptr_t)(pcb -> as.area.end) - USTACK_SIZE;
-  //pcb -> cp -> GPRs = (uintptr_t)(ustack_start);
-  //pcb -> cp -> GPRx = (uintptr_t)(ustack_start);
-  pcb -> cp -> GPRs = vas;
-  pcb -> cp -> GPRx = vas;
+  //uintptr_t vas = (uintptr_t)(pcb -> as.area.end) - USTACK_SIZE;
+  pcb -> cp -> GPRs = (uintptr_t)(ustack_start);
+  pcb -> cp -> GPRx = (uintptr_t)(ustack_start);
+  //pcb -> cp -> GPRs = vas;
+  //pcb -> cp -> GPRx = vas;
 }
