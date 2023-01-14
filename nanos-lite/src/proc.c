@@ -8,7 +8,7 @@ extern void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]);
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
-int fg_pcb = 1;
+int fg_pcb = 2;
 
 void switch_boot_pcb() {
   printf("switch to boot\n");
