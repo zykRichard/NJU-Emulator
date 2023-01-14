@@ -50,6 +50,10 @@ static int * csr_reg_chosen(int id){
     return &cpu.mtvec.val;
     break;
 
+  case 0x340:
+    return &cpu.mscratch;
+    break;
+
   case 0x341:
     return &cpu.mepc;
     break;

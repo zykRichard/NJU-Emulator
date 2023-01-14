@@ -78,6 +78,9 @@ typedef struct {
     int32_t val;
   } mcause;
 
+  //word_t mscratch; // 0x340
+  int32_t mscratch;
+
   // word_t satp; // 0x180
   union {
     struct {

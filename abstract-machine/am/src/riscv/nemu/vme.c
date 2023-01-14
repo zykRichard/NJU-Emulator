@@ -95,7 +95,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *ctx = (Context *)(kstack.end - sizeof(Context));
   ctx -> mepc = (uintptr_t)entry;
-  ctx -> mstatus |= 0x88;
+  ctx -> mstatus |= 0x80;
   ctx -> pdir = as -> ptr;
+  ctx -> mscratch = (uintptr_t)(kstack.end);
+  asm volatile("csrw mscratch, %0" : : "r"((uintptr_t)(kstack.end)));
   return ctx;
 }
