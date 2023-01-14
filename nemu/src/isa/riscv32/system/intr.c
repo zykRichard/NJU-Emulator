@@ -21,10 +21,17 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.mepc = epc;
   cpu.mcause.val = NO;
-  
+
+  cpu.mstatus.sig.MPIE = cpu.mstatus.sig.MIE;
+  cpu.mstatus.sig.MIE = 0;
+
   return cpu.mtvec.val;
 }
 
 word_t isa_query_intr() {
+  if(cpu.INTR && cpu.mstatus.sig.MIE){
+    cpu.INTR = 0;
+    return INTR_TIMER;
+  }
   return INTR_EMPTY;
 }

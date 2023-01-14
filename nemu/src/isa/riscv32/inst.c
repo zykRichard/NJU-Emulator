@@ -167,7 +167,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 111 ????? 11100 11", csrrci , CSRI, R(dest) = CS_R(src2); CS_R(src2) = (~ src1) & CS_R(src2));
   
   /***************************SYSTEM*******************************************/
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s -> dnpc = cpu.mepc);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s -> dnpc = cpu.mepc; cpu.mstatus.sig.MIE = cpu.mstatus.sig.MPIE; cpu.mstatus.sig.MPIE = 1);
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s -> dnpc = isa_raise_intr(gpr(17), cpu.pc + 4));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));

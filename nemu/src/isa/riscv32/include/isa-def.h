@@ -89,6 +89,10 @@ typedef struct {
   } satp;
 
   vaddr_t pc;
+
+  // time interrupt
+  bool INTR;
+
 } riscv32_CPU_state;
 
 // decode
