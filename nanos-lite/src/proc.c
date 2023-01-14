@@ -25,13 +25,13 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  char * argv2[] = {"/bin/bird", NULL};
-  char * envp2[] = {NULL};
-  context_uload(&pcb[2], "/bin/bird", argv2, envp2);
-
-  char * argv3[] = {"/bin/nterm", NULL};
+  char * argv3[] = {"/bin/bird", NULL};
   char * envp3[] = {NULL};
-  context_uload(&pcb[3], "/bin/nslider", argv3, envp3);
+  context_uload(&pcb[3], "/bin/bird", argv3, envp3);
+
+  char * argv2[] = {"/bin/nterm", NULL};
+  char * envp2[] = {NULL};
+  context_uload(&pcb[2], "/bin/nslider", argv2, envp2);
   //char * argv0[] = {"/bin/pal", "--skip", NULL};
   //char * envp0[] = {NULL};
   //context_uload(&pcb[1], "/bin/nterm", argv1, envp1);
