@@ -42,7 +42,6 @@ __am_asm_trap:
   
 
 save_context:
-  STORE sp, OFFSET_SCRATCH(sp)
   addi sp, sp, -CONTEXT_SIZE
 
   MAP(REGS, PUSH)
