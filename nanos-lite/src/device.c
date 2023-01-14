@@ -45,7 +45,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
   strcpy(str + 3, keyname[kbd.keycode]);
   strncpy(buf, str, len);
-  printf("read keyname %s\n", keyname[kbd.keycode]);
+  //printf("read keyname %s\n", keyname[kbd.keycode]);
   if(strcmp(keyname[kbd.keycode], "F1") == 0) fg_pcb = 1;
   else if(strcmp(keyname[kbd.keycode], "F2") == 0) fg_pcb = 2;
   else if(strcmp(keyname[kbd.keycode], "F3") == 0) fg_pcb = 3;
