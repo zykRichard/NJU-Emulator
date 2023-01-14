@@ -44,7 +44,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  printf("ready to schedule\n"); 
+  //printf("ready to schedule\n"); 
   current -> cp = prev;
   //current = (current == &pcb[0]) ? &pcb[1] : &pcb[0];
   current = &pcb[0];
