@@ -12,5 +12,5 @@ struct Context {
 #define GPR3 gpr[11] // a1
 #define GPR4 gpr[12] // a2
 #define GPRx gpr[10] // a0
-
+#define GPRs gpr[2]  // sp
 #endif
