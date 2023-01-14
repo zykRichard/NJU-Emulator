@@ -54,7 +54,7 @@ Context* schedule(Context *prev) {
   //printf("ready to schedule\n");
  
   current -> cp = prev;
-  current = (current == &pcb[1]) ? &pcb[2] : &pcb[1];
+  current = (current == &pcb[0]) ? &pcb[fg_pcb] : &pcb[0];
   //current = &pcb[0];
   return current -> cp;
 }
