@@ -80,6 +80,8 @@ NP_U:
   STORE t2, OFFSET_NP(sp)
 
 HANDLER:
+  xor t2, t0, t0
+  csrw mscratch, t2
   jal __am_irq_handle
   
   # set sp as new context
