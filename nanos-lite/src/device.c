@@ -14,7 +14,7 @@ static const char *keyname[256] __attribute__((used)) = {
   [AM_KEY_NONE] = "NONE",
   AM_KEYS(NAME)
 };
-
+extern int fg_pcb;
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *);
 void __am_gpu_config(AM_GPU_CONFIG_T *);
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *);
@@ -45,6 +45,9 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
   strcpy(str + 3, keyname[kbd.keycode]);
   strncpy(buf, str, len);
+  if(strcmp(keyname[kbd.keycode], "F1") == 0) fg_pcb = 1;
+  else if(strcmp(keyname[kbd.keycode], "F2") == 0) fg_pcb = 2;
+  else if(strcmp(keyname[kbd.keycode], "F3") == 0) fg_pcb = 3;
   return len;
 
   return 0;

@@ -8,6 +8,7 @@ extern void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]);
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
+int fg_pcb = 0;
 
 void switch_boot_pcb() {
   printf("switch to boot\n");
@@ -24,18 +25,23 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  //char * argv1[] = {"/bin/nterm", NULL};
-  //char * envp1[] = {NULL};
+  char * argv2[] = {"/bin/bird", NULL};
+  char * envp2[] = {NULL};
+  context_uload(&pcb[2], "/bin/bird", argv2, envp2);
+
+  char * argv3[] = {"/bin/nslider", NULL};
+  char * envp3[] = {NULL};
+  context_uload(&pcb[3], "/bin/bird", argv3, envp3);
   //char * argv0[] = {"/bin/pal", "--skip", NULL};
   //char * envp0[] = {NULL};
   //context_uload(&pcb[1], "/bin/nterm", argv1, envp1);
   //context_uload(&pcb[0], "/bin/pal", argv0, envp0);
-  context_kload(&pcb[1], hello_fun, (void *)'2');
+  context_kload(&pcb[0], hello_fun, (void *)'2');
   //context_uload(&pcb[0], "/bin/nterm");
   //context_uload(&pcb[1], "/bin/pal");
-  char *argv[] = {"/bin/pal", "--skip", NULL};
-  char *envp[] = {NULL};
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
+  char *argv1[] = {"/bin/pal", "--skip", NULL};
+  char *envp1[] = {NULL};
+  context_uload(&pcb[1], "/bin/pal", argv1, envp1);
   switch_boot_pcb();
   
   Log("Initializing processes...");
@@ -47,7 +53,7 @@ void init_proc() {
 Context* schedule(Context *prev) {
   //printf("ready to schedule\n"); 
   current -> cp = prev;
-  current = (current == &pcb[0]) ? &pcb[1] : &pcb[0];
+  current = (current == &pcb[0]) ? &pcb[fg_pcb] : &pcb[0];
   //current = &pcb[0];
   return current -> cp;
 }
