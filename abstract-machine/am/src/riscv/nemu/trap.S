@@ -93,6 +93,7 @@ HANDLER:
   csrw mstatus, t1
   csrw mepc, t2
   csrw mscratch, t3
+
   MAP(REGS, POP)
 
   LOAD sp, OFFSET_SP(sp)
