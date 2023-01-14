@@ -39,7 +39,7 @@ static Context* do_event(Event e, Context* c) {
     case EVENT_IRQ_TIMER: c = schedule(c); Log("time interrupt occurs");break; 
     default: panic("Unhandled event ID = %d", e.event);
   }
-
+  Log("mepc is %p, sp is %p, mscratch is %p", c -> mepc, c->GPRs, c->mscratch);
   return c;
 }
 
