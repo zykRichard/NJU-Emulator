@@ -95,5 +95,5 @@ HANDLER:
   csrw mscratch, t3
   MAP(REGS, POP)
 
-  LOAD sp, OFFSET_SP(sp)
+  mv sp, a0
   mret
