@@ -7,6 +7,7 @@ extern char **environ;
 void call_main(uintptr_t *args) {
   printf("go into call_main\n");
   int argc = *args;
+  printf("argc is %d\n", argc);
   uintptr_t *argv_start = args + 1;
   char *argv[argc];
   for(int i = 0; i < argc; i++){
