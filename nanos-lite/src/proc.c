@@ -8,7 +8,7 @@ extern void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]);
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
-int fg_pcb = 0;
+int fg_pcb = 1;
 
 void switch_boot_pcb() {
   printf("switch to boot\n");
@@ -51,7 +51,8 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  //printf("ready to schedule\n"); 
+  //printf("ready to schedule\n");
+ 
   current -> cp = prev;
   current = (current == &pcb[0]) ? &pcb[fg_pcb] : &pcb[0];
   //current = &pcb[0];
